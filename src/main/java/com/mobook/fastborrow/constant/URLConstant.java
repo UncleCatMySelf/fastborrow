@@ -30,6 +30,8 @@ public interface URLConstant {
 
     String BOOKMESSAGE_ZBLIST = "admin/bookmessage/zblist";
 
+    String BOOKMESSAGE_WLIST = "admin/bookmessage/wlist";
+
     String TAG_LIST = "admin/tag/list";
 
     String TAG_INDEX = "admin/tag/list";

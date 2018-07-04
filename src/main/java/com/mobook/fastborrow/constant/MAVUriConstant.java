@@ -30,11 +30,15 @@ public interface MAVUriConstant {
 
     String BOOK_NBLITS = "book/nblist";
 
+    String BOOK_WLITS = "book/wlist";
+
     String BOOK_ZBLITS = "book/zblist";
 
     String BOOK_NBINDEX = "book/nbindex";
 
     String BOOK_ZBINDEX = "book/zbindex";
+
+    String BOOK_WINDEX = "book/windex";
 
     String BOOK_WHERE_LIST = "bookWhere/list";
 

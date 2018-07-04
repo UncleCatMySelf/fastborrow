@@ -201,6 +201,15 @@ public class FbBookMessageController {
         return new ModelAndView(MAVUriConstant.BOOK_ZBLITS, map);
     }
 
+    @GetMapping("/wlist")
+    public ModelAndView wlist(Map<String, Object> map){
+        List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.WINNING.getCode());
+        List<Tag> tagList = tagService.findAll();
+        map.put("tagList",tagList);
+        map.put("bookMessageList",bookMessageList);
+        return new ModelAndView(MAVUriConstant.BOOK_WLITS, map);
+    }
+
     @GetMapping("/nb_search")
     public ModelAndView nbSearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                  @RequestParam(value = "size",defaultValue = "10") Integer size,
@@ -259,6 +268,35 @@ public class FbBookMessageController {
         return new ModelAndView(MAVUriConstant.BOOK_ZBINDEX,map);
     }
 
+    @GetMapping("/w_search")
+    public ModelAndView wSearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                 @RequestParam(value = "size",defaultValue = "10") Integer size,
+                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
+        PageRequest request = new PageRequest(page - 1,size);
+        Page<BookMessage> bookMessagePage = null;
+        if (!StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndBookNameIsLikeAndStatus(mobookId,bookName,BookStatusEnum.UP.getCode(),request);
+        }else if (StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByBookNameIsLikeAndStatus(bookName,BookStatusEnum.UP.getCode(),request);
+        }else if (!StringUtils.isEmpty(mobookId) && StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndStatus(mobookId,BookStatusEnum.UP.getCode(),request);
+        }else{
+            bookMessagePage = bookMessageService.findByStatus(BookStatusEnum.UP.getCode(),request);
+        }
+        List<BookWhere> bookWhereList = bookWhereService.findAll();
+        //查询所有分类
+        List<Tag> tagList = tagService.findAll();
+        map.put("tagList",tagList);
+        map.put("bookMessagePage",bookMessagePage);
+        map.put("bookWhereList",bookWhereList);
+        map.put("currentPage", page);
+        map.put("size", size);
+        map.put("sMobookId",mobookId);
+        map.put("sBookName",bookName);
+        return new ModelAndView(MAVUriConstant.BOOK_WINDEX,map);
+    }
+
     @GetMapping("/nb_add")
     public ModelAndView nbAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
         BookMessage bookMessage = bookMessageService.findOne(mobookId);
@@ -277,6 +315,15 @@ public class FbBookMessageController {
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_ZBLIST);
     }
 
+    @GetMapping("/w_add")
+    public ModelAndView wAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
+        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+        bookMessage.setStatus(BookStatusEnum.WINNING.getCode());
+        bookMessageService.save(bookMessage);
+        return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
+                URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
+    }
+
     @GetMapping("/no_newbook")
     public ModelAndView noNewbook(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
         BookMessage bookMessage = bookMessageService.findOne(mobookId);
@@ -293,5 +340,14 @@ public class FbBookMessageController {
         bookMessageService.save(bookMessage);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_ZBLIST);
+    }
+
+    @GetMapping("/no_wbook")
+    public ModelAndView noWbook(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
+        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+        bookMessage.setStatus(BookStatusEnum.UP.getCode());
+        bookMessageService.save(bookMessage);
+        return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
+                URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
     }
 }
