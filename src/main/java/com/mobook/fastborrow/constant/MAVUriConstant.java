@@ -28,6 +28,10 @@ public interface MAVUriConstant {
 
     String BOOK_INDEX = "book/index";
 
+    String BOOK_NBLITS = "book/nblist";
+
+    String BOOK_NBINDEX = "book/nbindex";
+
     String BOOK_WHERE_LIST = "bookWhere/list";
 
     String BOOK_WHERE_INDEX = "bookWhere/index";

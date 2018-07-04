@@ -32,6 +32,7 @@ public class BookMessageRepositoryTest extends FastborrowApplicationTests {
         String isbn = "2345nkl";
 //        BookMessage bookMessage = bookMessageRepository.findByIsbn(isbn);
 //        Assert.assertEquals("ceshiss",bookMessage.getBookName());
+
     }
 
 }

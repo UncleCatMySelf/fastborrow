@@ -12,7 +12,8 @@ import lombok.Getter;
 public enum BookStatusEnum  implements CodeEnum{
     UP(0 , "上线"),
     DOWN(1, "下线"),
-    READ(3,"借出")
+    READ(3,"上线"),
+    NEWBOOK(10,"上线")
     ;
     private Integer code;
 

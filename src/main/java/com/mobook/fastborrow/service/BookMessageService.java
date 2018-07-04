@@ -27,7 +27,19 @@ public interface BookMessageService {
 
     Page<BookMessage> findByMobookId(String mobookId, PageRequest request);
 
+    Page<BookMessage> findByMobookIdIsLikeAndStatus(String mobookId,Integer status ,Pageable pageable);
+
+    Page<BookMessage> findByBookNameIsLikeAndStatus(String bookName,Integer status , Pageable pageable);
+
+    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId,
+                                                                     String bookName,
+                                                                     Integer status,
+                                                                     Pageable pageable);
+    Page<BookMessage> findByStatus(Integer status,Pageable pageable);
+
     List<BookMessage> findByIsbn(String isbn);
+
+    List<BookMessage> findByStatus(Integer status);
 
     BookMessage onSale(String mobookId);
 

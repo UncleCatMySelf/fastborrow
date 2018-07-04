@@ -50,6 +50,14 @@
                 <li><a href="/fastborrow/admin/adveraddress/index">新增</a></li>
             </ul>
         </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 新书推荐 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/bookmessage/nblist">列表</a></li>
+                <li><a href="/fastborrow/admin/bookmessage/nb_search">新增</a></li>
+            </ul>
+        </li>
 
         <li>
             <a href="/fastborrow/admin/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>

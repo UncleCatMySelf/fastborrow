@@ -19,11 +19,25 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     List<BookMessage> findByIsbn(String isbn);
 
+    List<BookMessage> findByStatus(Integer status);
+
+    Page<BookMessage> findByStatus(Integer status,Pageable pageable);
+
     Page<BookMessage> findByMobookIdIsLike(@Param("mobookId") String mobookId, Pageable pageable);
 
+    Page<BookMessage> findByMobookIdIsLikeAndStatus(@Param("mobookId") String mobookId,@Param("status") Integer status ,Pageable pageable);
+
     Page<BookMessage> findByBookNameIsLike(@Param("bookName") String bookName, Pageable pageable);
+
+    Page<BookMessage> findByBookNameIsLikeAndStatus(@Param("bookName") String bookName,@Param("status") Integer status , Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLike(@Param("mobookId") String mobookId,
                                                             @Param("bookName") String bookName,
                                                             Pageable pageable);
+
+    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(@Param("mobookId") String mobookId,
+                                                            @Param("bookName") String bookName,
+                                                            @Param("status") Integer status,
+                                                            Pageable pageable);
+
 }

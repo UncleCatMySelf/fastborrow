@@ -59,8 +59,33 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
+    public Page<BookMessage> findByMobookIdIsLikeAndStatus(String mobookId, Integer status, Pageable pageable) {
+        return repository.findByMobookIdIsLikeAndStatus("%"+mobookId+"%",status,pageable);
+    }
+
+    @Override
+    public Page<BookMessage> findByBookNameIsLikeAndStatus(String bookName, Integer status, Pageable pageable) {
+        return repository.findByBookNameIsLikeAndStatus("%"+bookName+"%", status, pageable);
+    }
+
+    @Override
+    public Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId, String bookName, Integer status, Pageable pageable) {
+        return repository.findByMobookIdIsLikeAndBookNameIsLikeAndStatus("%"+mobookId+"%", "%"+bookName+"%", status, pageable);
+    }
+
+    @Override
+    public Page<BookMessage> findByStatus(Integer status, Pageable pageable) {
+        return repository.findByStatus(status, pageable);
+    }
+
+    @Override
     public List<BookMessage> findByIsbn(String isbn) {
         return repository.findByIsbn(isbn);
+    }
+
+    @Override
+    public List<BookMessage> findByStatus(Integer status) {
+        return repository.findByStatus(status);
     }
 
     @Override
