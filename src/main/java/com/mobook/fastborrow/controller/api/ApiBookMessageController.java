@@ -1,10 +1,12 @@
 package com.mobook.fastborrow.controller.api;
 
+import com.mobook.fastborrow.converter.BookMessage2EditorVOConverter;
 import com.mobook.fastborrow.converter.BookMessage2NewBookVOConverter;
 import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.enums.BookStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
+import com.mobook.fastborrow.vo.EditorVO;
 import com.mobook.fastborrow.vo.NewBookVO;
 import com.mobook.fastborrow.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,13 @@ public class ApiBookMessageController {
         List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.NEWBOOK.getCode());
         List<NewBookVO> newBookVOList = BookMessage2NewBookVOConverter.convert(bookMessageList);
         return ResultVOUtil.success(newBookVOList);
+    }
+
+    @GetMapping("/edlist")
+    public ResultVO<List<EditorVO>> editorList(){
+        List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.EDITOR.getCode());
+        List<EditorVO> editorVOList = BookMessage2EditorVOConverter.convert(bookMessageList);
+        return ResultVOUtil.success(editorVOList);
     }
 
 }

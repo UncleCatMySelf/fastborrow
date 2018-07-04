@@ -13,7 +13,7 @@
                     <div class="row clearfix">
                         <div class="col-md-12 column">
                             <h3>
-                                新书推荐列表
+                                主编推荐列表
                             </h3>
                         </div>
                         <div class="col-md-12 column">
