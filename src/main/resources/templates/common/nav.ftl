@@ -1,0 +1,130 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+    <ul class="nav sidebar-nav">
+        <li class="sidebar-brand">
+            <a href="#">
+                墨书科技“快借”系统
+            </a>
+        </li>
+        <li>
+            <a href="/fastborrow/admin/index"><i class="fa fa-fw fa-list-alt"></i>首页</a>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 图书管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/bookmessage/search">列表</a></li>
+                <li><a href="/fastborrow/admin/bookmessage/index">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 图书位置及分类管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/bookwhere/list">位置列表</a></li>
+                <li><a href="/fastborrow/admin/bookwhere/index">位置新增</a></li>
+                <li><a href="/fastborrow/admin/tag/list">分类列表</a></li>
+                <li><a href="/fastborrow/admin/tag/index">分类新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 评价管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 库存管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/inventory/search">列表</a></li>
+                <li><a href="/fastborrow/admin/inventory/index">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 借还管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 订单管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 支付管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 物流管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 用户管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 报表统计 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 权限管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 优惠管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/">列表</a></li>
+                <li><a href="/fastborrow/admin/">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 广告管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/advertising/list">列表</a></li>
+                <li><a href="/fastborrow/admin/advertising/index">新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 广告位置 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/adveraddress/list">列表</a></li>
+                <li><a href="/fastborrow/admin/adveraddress/index">新增</a></li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="/fastborrow/admin/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>
+        </li>
+    </ul>
+</nav>
