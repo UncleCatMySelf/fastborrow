@@ -24,7 +24,7 @@ import java.util.List;
  * @Date:Created in 11:12 2018\7\4 0004
  */
 @RestController
-@RequestMapping("/api/advertising")
+@RequestMapping("/api/v1/advertising")
 @Slf4j
 public class ApiAdvertisingController {
 

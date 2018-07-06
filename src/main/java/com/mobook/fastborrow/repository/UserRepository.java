@@ -10,4 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Date:Created in 17:10 2018\6\27 0027
  */
 public interface UserRepository extends JpaRepository<User, Integer> {
+
+    User findByOpenId(String openId);
+
 }

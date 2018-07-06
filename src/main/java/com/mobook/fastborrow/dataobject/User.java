@@ -4,6 +4,8 @@ import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -24,6 +26,7 @@ public class User implements Serializable {
 
     /**用户id生成*/
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
     /**用户名*/
@@ -65,4 +68,21 @@ public class User implements Serializable {
     /**最近登录时间*/
     private Date lastLoginTime;
 
+    public User(){}
+
+    public User(String userName, String openId, String avatarUrl, String city, String country, Integer gender, String province, Integer integral, BigDecimal userBalance, BigDecimal userDeposit, Date createTime, Date updateTime, Date lastLoginTime) {
+        this.userName = userName;
+        this.openId = openId;
+        this.avatarUrl = avatarUrl;
+        this.city = city;
+        this.country = country;
+        this.gender = gender;
+        this.province = province;
+        this.integral = integral;
+        this.userBalance = userBalance;
+        this.userDeposit = userDeposit;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.lastLoginTime = lastLoginTime;
+    }
 }

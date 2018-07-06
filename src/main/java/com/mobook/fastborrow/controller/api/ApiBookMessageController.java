@@ -27,7 +27,7 @@ import java.util.List;
  * @Date:Created in 12:00 2018\7\4 0004
  */
 @RestController
-@RequestMapping("/api/bookmessage")
+@RequestMapping("/api/v1/bookmessage")
 @Slf4j
 public class ApiBookMessageController {
 
