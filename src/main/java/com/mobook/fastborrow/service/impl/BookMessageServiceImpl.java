@@ -43,6 +43,16 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
+    public List<BookMessage> findByWhereTag(Integer whereTag) {
+        return repository.findByWhereTag(whereTag);
+    }
+
+    @Override
+    public List<BookMessage> findByTagNum(Integer tagNum) {
+        return repository.findByTagNum(tagNum);
+    }
+
+    @Override
     public Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest pageable) {
         return repository.findByMobookIdIsLikeAndBookNameIsLike("%"+mobookId+"%"
                 ,"%"+bookName+"%",pageable);

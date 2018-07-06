@@ -72,4 +72,9 @@ public class AdvertisingServiceImpl implements AdvertisingService {
         advertising.setAdverStatus(AdverStatusEnum.DOWN.getCode());
         return repository.save(advertising);
     }
+
+    @Override
+    public List<Advertising> findByAdverAddress(Integer adverAddress) {
+        return repository.findByAdverAddress(adverAddress);
+    }
 }

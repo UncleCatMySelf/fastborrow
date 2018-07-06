@@ -15,4 +15,6 @@ public interface AdvertisingRepository extends JpaRepository<Advertising, Intege
     // 根据位置与状态显示广告图片列表
     List<Advertising> findByAdverAddressAndAdverStatus(Integer adverAddress, Integer adverStatus);
 
+    List<Advertising> findByAdverAddress(Integer adverAddress);
+
 }

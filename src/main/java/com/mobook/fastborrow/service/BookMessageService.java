@@ -21,6 +21,10 @@ public interface BookMessageService {
 
     BookMessage findOne(String mobookId);
 
+    List<BookMessage> findByWhereTag(Integer whereTag);
+
+    List<BookMessage> findByTagNum(Integer tagNum);
+
     Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest request);
 
     Page<BookMessage> findByBookName(String bookName, PageRequest request);

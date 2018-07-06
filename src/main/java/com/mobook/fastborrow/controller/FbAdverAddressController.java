@@ -1,12 +1,15 @@
 package com.mobook.fastborrow.controller;
 
+import com.mobook.fastborrow.constant.LogMsgConstant;
 import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.MapMsgConstant;
 import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.dataobject.AdverAddress;
+import com.mobook.fastborrow.dataobject.Advertising;
 import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.form.AdverAddressForm;
 import com.mobook.fastborrow.service.AdverAddressService;
+import com.mobook.fastborrow.service.AdvertisingService;
 import com.mobook.fastborrow.utils.MAVUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,8 @@ public class FbAdverAddressController {
 
     @Autowired
     private AdverAddressService adverAddressService;
+    @Autowired
+    private AdvertisingService advertisingService;
 
     @GetMapping("/list")
     public ModelAndView list(Map<String, Object> map){
@@ -63,6 +68,11 @@ public class FbAdverAddressController {
         try {
             if (form.getId() != null){
                 adverAddress = adverAddressService.findOne(form.getId());
+                List<Advertising> advertisingList = advertisingService.findByAdverAddress(adverAddress.getAdvAdNum());
+                if (advertisingList.size() > 0){
+                    return MAVUtils.setResultMOV(MAVUriConstant.ERROR, LogMsgConstant.TYPE_UESING,
+                            URLConstant.BASE+URLConstant.ADVADD_LIST);
+                }
             }
             BeanUtils.copyProperties(form,adverAddress);
             adverAddressService.save(adverAddress);

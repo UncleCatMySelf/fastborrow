@@ -20,5 +20,5 @@ public interface LogMsgConstant {
     String ASPECT_COOKIE_NO = "Cookie中查不到token";
     String ASPECT_REDIS_NO = "Redis中查不到token";
 //信息查询
-
+    String TYPE_UESING = "本标签数值已引用";
 }

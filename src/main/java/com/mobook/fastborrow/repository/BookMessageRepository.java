@@ -19,6 +19,10 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     List<BookMessage> findByIsbn(String isbn);
 
+    List<BookMessage> findByWhereTag(Integer whereTag);
+
+    List<BookMessage> findByTagNum(Integer tagNum);
+
     List<BookMessage> findByStatus(Integer status);
 
     Page<BookMessage> findByStatus(Integer status,Pageable pageable);

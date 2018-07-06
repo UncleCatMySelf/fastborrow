@@ -1,12 +1,15 @@
 package com.mobook.fastborrow.controller;
 
+import com.mobook.fastborrow.constant.LogMsgConstant;
 import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.dataobject.AdverAddress;
+import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.Tag;
 import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.form.AdverAddressForm;
 import com.mobook.fastborrow.form.TagForm;
+import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.TagService;
 import com.mobook.fastborrow.utils.MAVUtils;
 import org.springframework.beans.BeanUtils;
@@ -35,6 +38,8 @@ public class FbTagController {
 
     @Autowired
     private TagService tagService;
+    @Autowired
+    private BookMessageService bookMessageService;
 
     @GetMapping("/list")
     public ModelAndView list(Map<String, Object> map){
@@ -64,6 +69,11 @@ public class FbTagController {
         try {
             if (form.getTagId() != null){
                 tag = tagService.findOne(form.getTagId());
+                List<BookMessage> bookMessageList = bookMessageService.findByTagNum(tag.getTagNum());
+                if (bookMessageList.size() > 0){
+                    return MAVUtils.setResultMOV(MAVUriConstant.ERROR, LogMsgConstant.TYPE_UESING,
+                            URLConstant.BASE+URLConstant.TAG_LIST);
+                }
             }
             BeanUtils.copyProperties(form,tag);
             tagService.save(tag);

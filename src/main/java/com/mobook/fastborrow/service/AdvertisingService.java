@@ -27,4 +27,6 @@ public interface AdvertisingService {
     Advertising onSale(Integer adverId);
 
     Advertising offSale(Integer adverId);
+
+    List<Advertising> findByAdverAddress(Integer adverAddress);
 }
