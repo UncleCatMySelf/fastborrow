@@ -14,87 +14,24 @@
 
                 <div class="col-md-12 column">
                     <h3>
-                        新书推荐操作页
+                        热门关键字操作页
                     </h3>
                 </div>
                 <div class="col-md-12 column">
-                    <form role="form" class="form-horizontal" action="/fastborrow/admin/bookmessage/nb_search">
+                    <form role="form" method="post" action="/fastborrow/admin/hotkey/save">
                         <div class="form-group">
-                            <label for="mobookId" class="col-sm-1 control-label">图书编号</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="mobookId" name="mobookId" value="${sMobookId!''}" />
-                            </div>
-                            <label for="bookName" class="col-sm-1 control-label">图书名称</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" id="bookName" name="bookName" value="${sBookName!''}" />
-                            </div>
-                            <button type="submit" class="col-sm-2 btn btn-default">搜索</button>
+                            <label>关键字名称</label>
+                            <input name="hotkeyName" type="text" class="form-control" value="${(hotKey.hotkeyName)!''}"/>
                         </div>
+                        <div class="form-group">
+                            <label>TYPE</label>
+                            <input name="hotkeyType" type="number" class="form-control" value="${(hotKey.hotkeyType)!''}"/>
+                        </div>
+                        <input hidden type="text" name="id" value="${(hotKey.id)!''}">
+                        <button type="submit" class="btn btn-default">提交</button>
                     </form>
                 </div>
-                <div class="col-md-12 column">
-                    <table class="table table-hover table-striped">
-                        <thead>
-                        <tr>
-                            <th>墨书Id</th>
-                            <th>书名</th>
-                            <th>ISBN</th>
-                            <th>价格</th>
-                            <th>分类</th>
-                            <th>位置</th>
-                            <th>出版日期</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <#list bookMessagePage.content as bookMessage>
-                        <tr>
-                            <td>${bookMessage.mobookId!''}</td>
-                            <td>${bookMessage.bookName!''}</td>
-                            <td>${bookMessage.isbn!''}</td>
-                            <td>${bookMessage.price!''}</td>
-                            <#list tagList as tag>
-                                <#if (bookMessage.tagNum)?? && bookMessage.tagNum == tag.tagNum>
-                                    <td>${tag.tagName}</td>
-                                </#if>
-                            </#list>
-                            <#list bookWhereList as bookWhere>
-                                <#if (bookMessage.whereTag)?? && bookMessage.whereTag == bookWhere.whereTag>
-                                    <td>${bookWhere.whereName}</td>
-                                </#if>
-                            </#list>
-                            <td>${bookMessage.pressTime!''}</td>
-                            <td>
-                                <a href="/fastborrow/admin/bookmessage/nb_add?mobookId=${bookMessage.mobookId}">设为新书推荐</a>
-                            </td>
-                        </tr>
-                        </#list>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-md-12 column">
-                <ul class="pagination pull-right">
-                <#if currentPage lte 1>
-                    <li class="disabled"><a href="#">上一页</a></li>
-                <#else>
-                    <li><a href="/fastborrow/admin/bookmessage/nb_search?page=${currentPage - 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">上一页</a></li>
-                </#if>
 
-                <#list 1..bookMessagePage.getTotalPages() as index>
-                    <#if currentPage == index>
-                        <li class="disabled"><a href="#">${index}</a></li>
-                    <#else>
-                        <li><a href="/fastborrow/admin/bookmessage/nb_search?page=${index}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">${index}</a></li>
-                    </#if>
-                </#list>
-                <#if currentPage gte bookMessagePage.getTotalPages()>
-                    <li class="disabled"><a href="#">下一页</a></li>
-                <#else>
-                    <li><a href="/fastborrow/admin/bookmessage/nb_search?page=${currentPage + 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">下一页</a></li>
-                </#if>
-                </ul>
-            </div>
             </div>
         </div>
     </div>

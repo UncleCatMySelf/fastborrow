@@ -38,4 +38,8 @@ public interface URLConstant {
 
     String TAG_INDEX = "admin/tag/list";
 
+    String HOTK_LIST = "admin/hotkey/list";
+
+    String HOTK_INDEX = "admin/hotkey/index";
+
 }

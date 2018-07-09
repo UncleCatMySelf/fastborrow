@@ -80,8 +80,8 @@
                 <li class="dropdown-header">操作</li>
                 <li><a href="/fastborrow/admin/bookmessage/hots_list">热门搜索列表</a></li>
                 <li><a href="/fastborrow/admin/bookmessage/hots_search">热门搜索新增</a></li>
-                <li><a href="/fastborrow/admin/bookmessage/hotk_list">热门关键字列表</a></li>
-                <li><a href="/fastborrow/admin/bookmessage/hotk_search">热门关键字新增</a></li>
+                <li><a href="/fastborrow/admin/hotkey/list">热门关键字列表</a></li>
+                <li><a href="/fastborrow/admin/hotkey/index">热门关键字新增</a></li>
             </ul>
         </li>
 

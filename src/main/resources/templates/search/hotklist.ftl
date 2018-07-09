@@ -13,37 +13,31 @@
                     <div class="row clearfix">
                         <div class="col-md-12 column">
                             <h3>
-                                新书推荐列表
+                                热门关键字列表
                             </h3>
                         </div>
                         <div class="col-md-12 column">
                             <table class="table table-hover table-striped">
                                 <thead>
                                 <tr>
-                                    <th>墨书Id</th>
-                                    <th>书名</th>
-                                    <th>ISBN</th>
-                                    <th>价格</th>
-                                    <th>分类</th>
-                                    <th>出版日期</th>
+                                    <th>ID</th>
+                                    <th>关键字名称</th>
+                                    <th>TYPE</th>
+                                    <th>创建时间</th>
+                                    <th>修改时间</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#list bookMessageList as bookMessage>
+                                <#list hotKeyList as hotKey>
                                 <tr>
-                                    <td>${bookMessage.mobookId}</td>
-                                    <td>${bookMessage.bookName}</td>
-                                    <td>${bookMessage.isbn}</td>
-                                    <td>${bookMessage.price}</td>
-                                    <#list tagList as tag>
-                                        <#if (bookMessage.tagNum)?? && bookMessage.tagNum == tag.tagNum>
-                                            <td>${tag.tagName}</td>
-                                        </#if>
-                                    </#list>
-                                    <td>${bookMessage.pressTime}</td>
+                                    <td>${hotKey.id}</td>
+                                    <td>${hotKey.hotkeyName}</td>
+                                    <td>${hotKey.hotkeyType}</td>
+                                    <td>${hotKey.createTime}</td>
+                                    <td>${hotKey.updateTime}</td>
                                     <td>
-                                        <a href="/fastborrow/admin/bookmessage/no_newbook?mobookId=${bookMessage.mobookId}">撤销推荐</a>
+                                        <a href="/fastborrow/admin/hotkey/index?id=${hotKey.id}">修改</a>
                                     </td>
                                 </tr>
                                 </#list>
