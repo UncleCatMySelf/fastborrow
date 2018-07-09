@@ -16,6 +16,7 @@ public enum BookStatusEnum  implements CodeEnum{
     NEWBOOK(10,"上线"),
     EDITOR(20,"上线"),
     WINNING(30,"上线"),
+    HOTSEARCH(40,"上线"),
     ;
     private Integer code;
 

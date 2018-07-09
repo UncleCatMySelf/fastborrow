@@ -74,6 +74,16 @@
                 <li><a href="/fastborrow/admin/bookmessage/w_search">新增</a></li>
             </ul>
         </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 搜索业务 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/bookmessage/hots_list">热门搜索列表</a></li>
+                <li><a href="/fastborrow/admin/bookmessage/hots_search">热门搜索新增</a></li>
+                <li><a href="/fastborrow/admin/bookmessage/hotk_list">热门关键字列表</a></li>
+                <li><a href="/fastborrow/admin/bookmessage/hotk_search">热门关键字新增</a></li>
+            </ul>
+        </li>
 
         <li>
             <a href="/fastborrow/admin/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>

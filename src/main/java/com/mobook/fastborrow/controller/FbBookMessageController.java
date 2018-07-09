@@ -196,6 +196,11 @@ public class FbBookMessageController {
         return new ModelAndView(MAVUriConstant.BOOK_NBLITS, XXList(BookStatusEnum.NEWBOOK.getCode(),map));
     }
 
+    @GetMapping("/hots_list")
+    public ModelAndView hotsList(Map<String, Object> map){
+        return new ModelAndView(MAVUriConstant.HOTS_LIST, XXList(BookStatusEnum.HOTSEARCH.getCode(),map));
+    }
+
     @GetMapping("/zblist")
     public ModelAndView zblist(Map<String, Object> map){
         return new ModelAndView(MAVUriConstant.BOOK_ZBLITS, XXList(BookStatusEnum.EDITOR.getCode(),map));
@@ -229,6 +234,14 @@ public class FbBookMessageController {
         map.put("sMobookId",mobookId);
         map.put("sBookName",bookName);
         return map;
+    }
+
+    @GetMapping("/hots_search")
+    public ModelAndView hotSsearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                                 @RequestParam(value = "size",defaultValue = "10") Integer size,
+                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
+        return new ModelAndView(MAVUriConstant.HOTS_INDEX, XXSearch(page, size, mobookId, bookName, map));
     }
 
 
@@ -265,6 +278,21 @@ public class FbBookMessageController {
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_NBLIST);
     }
 
+    @GetMapping("/hots_add")
+    public ModelAndView hotsAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
+        List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.HOTSEARCH.getCode());
+        if (bookMessageList.size() >= 4){
+            return MAVUtils.setResultMOV(MAVUriConstant.ERROR,null,
+                    URLConstant.BASE+URLConstant.HOTS_SEARCH_LIST);
+        }else {
+            BookMessage bookMessage = bookMessageService.findOne(mobookId);
+            bookMessage.setStatus(BookStatusEnum.HOTSEARCH.getCode());
+            bookMessageService.save(bookMessage);
+            return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
+                    URLConstant.BASE+URLConstant.HOTS_SEARCH_LIST);
+        }
+    }
+
     @GetMapping("/zb_add")
     public ModelAndView zbAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
         BookMessage bookMessage = bookMessageService.findOne(mobookId);
@@ -295,6 +323,13 @@ public class FbBookMessageController {
         updateStatus(mobookId);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_NBLIST);
+    }
+
+    @GetMapping("/no_hotssearch")
+    public ModelAndView noHotsSearch(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
+        updateStatus(mobookId);
+        return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
+                URLConstant.BASE+URLConstant.HOTS_SEARCH_LIST);
     }
 
     @GetMapping("/no_zbbook")

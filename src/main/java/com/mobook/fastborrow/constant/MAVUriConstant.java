@@ -51,4 +51,8 @@ public interface MAVUriConstant {
     String INVEN_LIST = "inventory/list";
 
     String INVEN_INDEX = "inventory/index";
+
+    String HOTS_LIST = "search/hotslist";
+
+    String HOTS_INDEX = "search/hotsindex";
 }
