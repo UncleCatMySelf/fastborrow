@@ -4,6 +4,7 @@ import com.mobook.fastborrow.dataobject.BookMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -25,6 +26,10 @@ public interface BookMessageService {
 
     List<BookMessage> findByTagNum(Integer tagNum);
 
+    List<BookMessage> findByRecNum(Integer recNum);
+
+    Page<BookMessage> findByStatusIsNot(Integer status,Pageable pageable);
+
     Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest request);
 
     Page<BookMessage> findByBookName(String bookName, PageRequest request);
@@ -33,12 +38,21 @@ public interface BookMessageService {
 
     Page<BookMessage> findByMobookIdIsLikeAndStatus(String mobookId,Integer status ,Pageable pageable);
 
+    Page<BookMessage> findByMobookIdIsLikeAndStatusIsNot(String mobookId,Integer status , Pageable pageable);
+
     Page<BookMessage> findByBookNameIsLikeAndStatus(String bookName,Integer status , Pageable pageable);
+
+    Page<BookMessage> findByBookNameIsLikeAndStatusIsNot(String bookName,Integer status , Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId,
                                                                      String bookName,
                                                                      Integer status,
                                                                      Pageable pageable);
+    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNot(String mobookId,
+                                                                          String bookName,
+                                                                          Integer status,
+                                                                          Pageable pageable);
+
     Page<BookMessage> findByStatus(Integer status,Pageable pageable);
 
     List<BookMessage> findByIsbn(String isbn);

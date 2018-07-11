@@ -25,15 +25,23 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     List<BookMessage> findByStatus(Integer status);
 
+    List<BookMessage> findByRecNum(Integer recNum);
+
+    Page<BookMessage> findByStatusIsNotAndRecNumIs(@Param("status") Integer status,@Param("recNum") Integer recNum,Pageable pageable);
+
     Page<BookMessage> findByStatus(Integer status,Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLike(@Param("mobookId") String mobookId, Pageable pageable);
+
+    Page<BookMessage> findByMobookIdIsLikeAndStatusIsNotAndRecNumIs(@Param("mobookId") String mobookId,@Param("status") Integer status,@Param("recNum") Integer recNum,Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLikeAndStatus(@Param("mobookId") String mobookId,@Param("status") Integer status ,Pageable pageable);
 
     Page<BookMessage> findByBookNameIsLike(@Param("bookName") String bookName, Pageable pageable);
 
     Page<BookMessage> findByBookNameIsLikeAndStatus(@Param("bookName") String bookName,@Param("status") Integer status , Pageable pageable);
+
+    Page<BookMessage> findByBookNameIsLikeAndStatusIsNotAndRecNumIs(@Param("bookName") String bookName,@Param("status") Integer status ,@Param("recNum") Integer recNum, Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLike(@Param("mobookId") String mobookId,
                                                             @Param("bookName") String bookName,
@@ -44,4 +52,9 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
                                                             @Param("status") Integer status,
                                                             Pageable pageable);
 
+    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs(@Param("mobookId") String mobookId,
+                                                                     @Param("bookName") String bookName,
+                                                                     @Param("status") Integer status,
+                                                                     @Param("recNum") Integer recNum,
+                                                                     Pageable pageable);
 }

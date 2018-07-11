@@ -12,10 +12,10 @@
         <div class="container-fluid">
             <div class="row clearfix">
 
-                <div class="col-md-12 column">
-                    <h3>
+                <div class="col-md-12 column tit">
+                    <h2>
                         广告位置类型详情页
-                    </h3>
+                    </h2>
                 </div>
 
                 <div class="col-md-12 column">
@@ -29,7 +29,7 @@
                             <input name="advAdNum" type="number" class="form-control" value="${(adverAddress.advAdNum)!''}"/>
                         </div>
                         <input hidden type="text" name="id" value="${(adverAddress.id)!''}">
-                        <button type="submit" class="btn btn-default">提交</button>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
                     </form>
                 </div>
             </div>

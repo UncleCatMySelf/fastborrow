@@ -53,6 +53,16 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
+    public List<BookMessage> findByRecNum(Integer recNum) {
+        return repository.findByRecNum(recNum);
+    }
+
+    @Override
+    public Page<BookMessage> findByStatusIsNot(Integer status, Pageable pageable) {
+        return repository.findByStatusIsNotAndRecNumIs(status, 0,pageable);
+    }
+
+    @Override
     public Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest pageable) {
         return repository.findByMobookIdIsLikeAndBookNameIsLike("%"+mobookId+"%"
                 ,"%"+bookName+"%",pageable);
@@ -74,13 +84,28 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
+    public Page<BookMessage> findByMobookIdIsLikeAndStatusIsNot(String mobookId, Integer status, Pageable pageable) {
+        return repository.findByMobookIdIsLikeAndStatusIsNotAndRecNumIs("%"+mobookId+"%", status,0, pageable);
+    }
+
+    @Override
     public Page<BookMessage> findByBookNameIsLikeAndStatus(String bookName, Integer status, Pageable pageable) {
         return repository.findByBookNameIsLikeAndStatus("%"+bookName+"%", status, pageable);
     }
 
     @Override
+    public Page<BookMessage> findByBookNameIsLikeAndStatusIsNot(String bookName, Integer status, Pageable pageable) {
+        return repository.findByBookNameIsLikeAndStatusIsNotAndRecNumIs("%"+bookName+"%", status,0, pageable);
+    }
+
+    @Override
     public Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId, String bookName, Integer status, Pageable pageable) {
         return repository.findByMobookIdIsLikeAndBookNameIsLikeAndStatus("%"+mobookId+"%", "%"+bookName+"%", status, pageable);
+    }
+
+    @Override
+    public Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNot(String mobookId, String bookName, Integer status, Pageable pageable) {
+        return repository.findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs("%"+mobookId+"%", "%"+bookName+"%", status,0, pageable);
     }
 
     @Override

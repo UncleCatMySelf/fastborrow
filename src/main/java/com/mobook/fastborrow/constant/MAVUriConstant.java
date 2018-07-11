@@ -59,4 +59,8 @@ public interface MAVUriConstant {
     String HOTK_LIST = "search/hotklist";
 
     String HOTK_INDEX = "search/hotkindex";
+
+    String REC_INDEX = "recommended/index";
+
+    String REC_LIST = "recommended/list";
 }

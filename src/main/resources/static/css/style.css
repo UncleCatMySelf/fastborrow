@@ -50,7 +50,7 @@ html {
   display: none;
 }
 #page-content-wrapper {
-  padding-top: 70px;
+  /* padding-top: 70px; */
   width: 100%;
 }
 /*-------------------------------*/
@@ -82,7 +82,7 @@ html {
   width: 3px;
   z-index: -1;
 }
-.sidebar-nav li:first-child a {
+/* .sidebar-nav li:first-child a {
   background-color: #1a1a1a;
   color: #ffffff;
 }
@@ -109,12 +109,12 @@ html {
 }
 .sidebar-nav li:nth-child(9):before {
   background-color: #987dbf;
-}
-.sidebar-nav li:hover:before {
+} */
+/* .sidebar-nav li:hover:before {
   -webkit-transition: width 0.2s ease-in;
   transition: width 0.2s ease-in;
   width: 100%;
-}
+} */
 .sidebar-nav li a {
   color: #dddddd;
   display: block;
@@ -261,4 +261,14 @@ html {
   -webkit-transition: all 0.35s ease-in-out;
   display: block;
   opacity: 1;
+}
+
+/* 广告位置类型详情页 */
+.tit {
+  margin-bottom: 60px;
+  min-width: 300px;
+}
+/* 页面最小宽度 */
+body {
+  min-width:600px;
 }

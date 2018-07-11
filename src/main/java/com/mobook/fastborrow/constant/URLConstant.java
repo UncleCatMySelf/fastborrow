@@ -42,4 +42,8 @@ public interface URLConstant {
 
     String HOTK_INDEX = "admin/hotkey/index";
 
+    String REC_INDEX = "admin/recommended/index";
+
+    String REC_LIST = "admin/recommended/list";
+
 }

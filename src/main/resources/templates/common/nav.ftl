@@ -1,5 +1,5 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-    <ul class="nav sidebar-nav">
+    <ul class="nav sidebar-nav"  id="navUl">
         <li class="sidebar-brand">
             <a href="#">
                 墨书科技“快借”系统
@@ -82,6 +82,14 @@
                 <li><a href="/fastborrow/admin/bookmessage/hots_search">热门搜索新增</a></li>
                 <li><a href="/fastborrow/admin/hotkey/list">热门关键字列表</a></li>
                 <li><a href="/fastborrow/admin/hotkey/index">热门关键字新增</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 阅读推荐 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/recommended/list">列表</a></li>
+                <li><a href="/fastborrow/admin/recommended/index">新增</a></li>
             </ul>
         </li>
 

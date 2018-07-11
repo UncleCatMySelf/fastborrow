@@ -81,6 +81,9 @@ public class BookMessage implements Serializable {
     /**借阅人数*/
     private Integer num = 0;
 
+    /**推荐方案值*/
+    private Integer recNum = 0;
+
     /**创建时间*/
     private Date createTime;
 
