@@ -2,6 +2,8 @@ package com.mobook.fastborrow.form;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -14,6 +16,7 @@ public class AdverAddressForm {
     private Integer id;
 
     // 位置名称
+    @NotEmpty(message = "位置名称不能为空")
     private String advAdName;
 
     // 数字标签

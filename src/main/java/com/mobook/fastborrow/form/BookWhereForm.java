@@ -2,6 +2,8 @@ package com.mobook.fastborrow.form;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -13,7 +15,9 @@ public class BookWhereForm {
 
     private Integer id;
 
+    @NotEmpty(message = "位置名称不能为空")
     private String whereName;
 
+    @NotEmpty(message = "标签不能为空")
     private String whereTag;
 }

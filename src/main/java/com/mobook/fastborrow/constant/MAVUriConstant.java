@@ -63,4 +63,8 @@ public interface MAVUriConstant {
     String REC_INDEX = "recommended/index";
 
     String REC_LIST = "recommended/list";
+
+    String USER_LIST = "user/list";
+
+    String USER_MORELIST = "user/morelist";
 }

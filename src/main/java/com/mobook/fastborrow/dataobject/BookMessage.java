@@ -84,6 +84,8 @@ public class BookMessage implements Serializable {
     /**推荐方案值*/
     private Integer recNum = 0;
 
+    private String imageContext;
+
     /**创建时间*/
     private Date createTime;
 

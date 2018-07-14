@@ -36,7 +36,8 @@ html {
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
   -webkit-transition: all 0.5s ease;
-  background: #1a1a1a;
+  background: #fff;
+  border: 1px solid #ddd;
   height: 100%;
   left: 220px;
   margin-left: -220px;
@@ -71,7 +72,7 @@ html {
   width: 100%;
 }
 .sidebar-nav li:before {
-  background-color: #1c1c1c;
+  /* background-color: #1c1c1c; */
   content: '';
   height: 100%;
   left: 0;
@@ -271,4 +272,29 @@ html {
 /* 页面最小宽度 */
 body {
   min-width:600px;
+}
+
+/* 左侧导航栏子导航栏样式 */
+#navUl {
+  box-sizing: border-box;
+  border: none;
+}
+#navUl>li>ul>li {
+  background: #e8e6e6;
+}
+#navUl>li>ul>li>a {
+  color: #333;
+}
+#navUl>li {
+  border-bottom: 1px solid #ddd;
+}
+#navUl>li>a {
+  color: #333;
+}
+#navUl>li:first-child {
+  background: #1b7ee4;
+  font-weight: 500;
+}
+#navUl>li:first-child>a {
+  color: #fff;
 }

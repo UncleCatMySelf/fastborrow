@@ -46,4 +46,6 @@ public interface URLConstant {
 
     String REC_LIST = "admin/recommended/list";
 
+    String USER_LIST = "admin/user/list";
+
 }

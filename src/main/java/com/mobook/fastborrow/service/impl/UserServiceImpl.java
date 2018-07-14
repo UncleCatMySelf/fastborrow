@@ -2,19 +2,18 @@ package com.mobook.fastborrow.service.impl;
 
 import com.mobook.fastborrow.constant.*;
 import com.mobook.fastborrow.dataobject.User;
-import com.mobook.fastborrow.exception.FastBorrowAuthorizeException;
 import com.mobook.fastborrow.repository.UserRepository;
 import com.mobook.fastborrow.service.UserService;
 import com.mobook.fastborrow.utils.HttpServiceUtils;
-import com.mobook.fastborrow.utils.LogUtil;
 import com.mobook.fastborrow.utils.ResultVOUtil;
-import com.mobook.fastborrow.utils.WxUtils;
 import com.mobook.fastborrow.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -96,6 +95,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Page<User> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Page<User> findByUserId(Integer userId, Pageable pageable) {
+        return repository.findByUserId(userId,pageable);
+    }
+
+    @Override
     public User findByOpenId(String openId) {
         return repository.findByOpenId(openId);
     }
@@ -109,6 +118,7 @@ public class UserServiceImpl implements UserService {
             return ResultVOUtil.success(true);
         }
     }
+
 
     private String[] granToken(Object openid){
         String[] results = new String[2];

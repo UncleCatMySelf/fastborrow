@@ -9,6 +9,14 @@
             <a href="/fastborrow/admin/index"><i class="fa fa-fw fa-list-alt"></i>首页</a>
         </li>
         <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 微信用户管理 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/user/list">基本信息</a></li>
+                <li><a href="/fastborrow/admin/user/morelist">系统信息</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 图书管理 <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>

@@ -69,6 +69,9 @@ public class BookMessageForm {
     @NotEmpty(message = "标签不能为空")
     private String lable;
 
+    @NotEmpty(message = "长图简介不能为空")
+    private String imageContext;
+
     /**分类数值*/
     private Integer tagNum;
 }

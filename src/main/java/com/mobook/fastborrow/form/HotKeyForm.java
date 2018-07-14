@@ -2,6 +2,8 @@ package com.mobook.fastborrow.form;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -13,6 +15,7 @@ public class HotKeyForm {
 
     private Integer id;
 
+    @NotEmpty(message = "关键字不能为空")
     private String hotkeyName;
 
     private Integer hotkeyType;
