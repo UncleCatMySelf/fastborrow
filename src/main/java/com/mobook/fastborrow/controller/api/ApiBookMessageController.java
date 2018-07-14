@@ -1,9 +1,6 @@
 package com.mobook.fastborrow.controller.api;
 
-import com.mobook.fastborrow.converter.BookMessage2EditorVOConverter;
-import com.mobook.fastborrow.converter.BookMessage2HotsSearchVOConverter;
-import com.mobook.fastborrow.converter.BookMessage2NewBookVOConverter;
-import com.mobook.fastborrow.converter.BookMessage2WinningVOConverter;
+import com.mobook.fastborrow.converter.*;
 import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.enums.BookStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
@@ -13,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -58,6 +56,13 @@ public class ApiBookMessageController {
         List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.HOTSEARCH.getCode());
         List<HotsSearchVO> hotsSearchVOList = BookMessage2HotsSearchVOConverter.convert(bookMessageList);
         return ResultVOUtil.success(hotsSearchVOList);
+    }
+
+    @GetMapping("/bookDetail")
+    public ResultVO<BookDetailVO> getBookDetail(@RequestParam("mobookId") String mobookId){
+        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+        BookDetailVO bookDetailVO = BookMessage2BookDetailVoConverter.convert(bookMessage);
+        return ResultVOUtil.success(bookDetailVO);
     }
 
 }
