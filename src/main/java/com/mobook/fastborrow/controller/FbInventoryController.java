@@ -98,7 +98,7 @@ public class FbInventoryController {
 
     @Transactional
     @PostMapping("/add")
-    public ModelAndView add(@RequestParam("whereTag") Integer whereTag,
+    public ModelAndView add(@RequestParam("whereTag") String whereTag,
                             @RequestParam("isbn") String isbn,Map<String,Object> map){
         BookMessage bookMessage = new BookMessage();
         String keyId = null;

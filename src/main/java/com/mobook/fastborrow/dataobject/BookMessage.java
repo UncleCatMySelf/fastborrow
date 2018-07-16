@@ -40,7 +40,7 @@ public class BookMessage implements Serializable {
     private BigDecimal price;
 
     /**位置*/
-    private Integer whereTag;
+    private String whereTag;
 
     /**作者*/
     private String author;

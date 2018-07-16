@@ -43,7 +43,7 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public List<BookMessage> findByWhereTag(Integer whereTag) {
+    public List<BookMessage> findByWhereTag(String whereTag) {
         return repository.findByWhereTag(whereTag);
     }
 

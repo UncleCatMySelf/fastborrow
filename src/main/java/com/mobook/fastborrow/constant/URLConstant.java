@@ -22,7 +22,7 @@ public interface URLConstant {
 
     String BOOKWHERE_INDEX = "admin/bookwhere/index";
 
-    String BOOKMESSAGE_LIST = "admin/bookmessage/list";
+    String BOOKMESSAGE_LIST = "admin/bookmessage/search";
 
     String BOOKMESSAGE_INDEX = "admin/bookmessage/index";
 

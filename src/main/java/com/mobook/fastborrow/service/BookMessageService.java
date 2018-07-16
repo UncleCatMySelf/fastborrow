@@ -22,7 +22,7 @@ public interface BookMessageService {
 
     BookMessage findOne(String mobookId);
 
-    List<BookMessage> findByWhereTag(Integer whereTag);
+    List<BookMessage> findByWhereTag(String whereTag);
 
     List<BookMessage> findByTagNum(Integer tagNum);
 

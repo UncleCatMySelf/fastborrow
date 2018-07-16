@@ -88,7 +88,7 @@
                         <div class="form-group">
                             <label>介绍长图</label>
                             <img width="100" height="100" src="${(bookMessage.imageContext)!''}">
-                            <input name="images" type="text" class="form-control" value="${(bookMessage.imageContext)!''}"/>
+                            <input name="imageContext" type="text" class="form-control" value="${(bookMessage.imageContext)!''}"/>
                         </div>
                         <div class="form-group">
                             <label>标签</label>

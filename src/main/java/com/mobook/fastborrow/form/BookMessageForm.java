@@ -31,7 +31,7 @@ public class BookMessageForm {
     private BigDecimal price;
 
     /**位置*/
-    private Integer whereTag;
+    private String whereTag;
 
     /**作者*/
     @NotEmpty(message = "作者不能为空")
@@ -69,7 +69,7 @@ public class BookMessageForm {
     @NotEmpty(message = "标签不能为空")
     private String lable;
 
-    @NotEmpty(message = "长图简介不能为空")
+
     private String imageContext;
 
     /**分类数值*/

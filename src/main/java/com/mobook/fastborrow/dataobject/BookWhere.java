@@ -28,7 +28,7 @@ public class BookWhere implements Serializable{
 
     private String whereName;
 
-    private Integer whereTag;
+    private String whereTag;
 
     private Date createTime;
 
