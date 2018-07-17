@@ -20,4 +20,6 @@ public interface RecommendedService {
 
     Page<Recommended> findAllByTitleIsLike(String title, Pageable pageable);
 
+    Page<Recommended> findAllByStatus(Integer status, Pageable pageable);
+
 }

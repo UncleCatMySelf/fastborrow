@@ -15,4 +15,6 @@ public interface RecommendedRepository extends JpaRepository<Recommended,Integer
 
     Page<Recommended> findAllByTitleIsLike(String title, Pageable pageable);
 
+    Page<Recommended> findAllByStatus(Integer status, Pageable pageable);
+
 }

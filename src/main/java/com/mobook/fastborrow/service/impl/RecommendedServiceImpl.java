@@ -39,4 +39,11 @@ public class RecommendedServiceImpl implements RecommendedService {
     public Page<Recommended> findAllByTitleIsLike(String title, Pageable pageable) {
         return repository.findAllByTitleIsLike("%"+title+"%", pageable);
     }
+
+    @Override
+    public Page<Recommended> findAllByStatus(Integer status, Pageable pageable) {
+        return repository.findAllByStatus(status, pageable);
+    }
+
+
 }
