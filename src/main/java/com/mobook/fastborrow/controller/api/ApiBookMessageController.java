@@ -2,8 +2,11 @@ package com.mobook.fastborrow.controller.api;
 
 import com.mobook.fastborrow.converter.*;
 import com.mobook.fastborrow.dataobject.BookMessage;
+import com.mobook.fastborrow.dataobject.Inventory;
 import com.mobook.fastborrow.enums.BookStatusEnum;
+import com.mobook.fastborrow.enums.InventoryStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
+import com.mobook.fastborrow.service.InventoryService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.*;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,8 @@ public class ApiBookMessageController {
 
     @Autowired
     private BookMessageService bookMessageService;
+    @Autowired
+    private InventoryService inventoryService;
 
     @GetMapping("/nblist")
     public ResultVO<List<NewBookVO>> newBookList(){
@@ -62,6 +67,14 @@ public class ApiBookMessageController {
     public ResultVO<BookDetailVO> getBookDetail(@RequestParam("mobookId") String mobookId){
         BookMessage bookMessage = bookMessageService.findOne(mobookId);
         BookDetailVO bookDetailVO = BookMessage2BookDetailVoConverter.convert(bookMessage);
+        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
+        if (inventory.getStatusNum() > 0){
+            //有货
+            bookDetailVO.setInventoryState(InventoryStatusEnum.YES.getCode());
+        }else{
+            //无货
+            bookDetailVO.setInventoryState(InventoryStatusEnum.NO.getCode());
+        }
         return ResultVOUtil.success(bookDetailVO);
     }
 

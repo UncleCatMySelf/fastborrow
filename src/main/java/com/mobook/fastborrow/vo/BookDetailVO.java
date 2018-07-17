@@ -32,6 +32,10 @@ public class BookDetailVO {
 
     private Integer num;
 
+    private Double score;
+
     private String imageContext;
+
+    private Integer InventoryState;
 
 }
