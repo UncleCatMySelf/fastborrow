@@ -34,4 +34,14 @@ public class BookWhereServiceImpl implements BookWhereService {
     public BookWhere findOne(Integer id) {
         return respository.findById(id).get();
     }
+
+    @Override
+    public BookWhere findByWhereTag(String whereTag) {
+        return respository.findByWhereTag(whereTag);
+    }
+
+    @Override
+    public BookWhere findByWhereName(String whereName) {
+        return respository.findByWhereName(whereName);
+    }
 }

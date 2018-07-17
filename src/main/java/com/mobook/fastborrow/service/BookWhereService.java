@@ -18,4 +18,8 @@ public interface BookWhereService {
 
     BookWhere findOne(Integer id);
 
+    BookWhere findByWhereTag(String whereTag);
+
+    BookWhere findByWhereName(String whereName);
+
 }

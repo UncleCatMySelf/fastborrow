@@ -63,6 +63,12 @@ public class FbBookWhereController {
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,bindingResult.getFieldError().getDefaultMessage(),
                     URLConstant.BASE+URLConstant.BOOKWHERE_INDEX);
         }
+        BookWhere bookWhereItem = bookWhereService.findByWhereTag(form.getWhereTag());
+        BookWhere bookWhereItem2 = bookWhereService.findByWhereName(form.getWhereName());
+        if (bookWhereItem != null || bookWhereItem2 != null){
+            return MAVUtils.setResultMOV(MAVUriConstant.ERROR,"存在重复数据，请重新填写",
+                    URLConstant.BASE+URLConstant.BOOKWHERE_INDEX);
+        }
         BookWhere bookWhere = new BookWhere();
         try {
             if (form.getId() != null){

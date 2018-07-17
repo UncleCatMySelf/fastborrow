@@ -18,4 +18,8 @@ public interface TagService {
 
     Tag findOne(Integer tagId);
 
+    Tag findByTagNum(Integer tagNum);
+
+    Tag findByTagName(String tagName);
+
 }

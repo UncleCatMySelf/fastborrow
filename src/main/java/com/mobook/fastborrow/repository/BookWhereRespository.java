@@ -10,4 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Date:Created in 15:36 2018\6\30 0030
  */
 public interface BookWhereRespository extends JpaRepository<BookWhere, Integer> {
+
+    BookWhere findByWhereTag(String whereTag);
+
+    BookWhere findByWhereName(String whereName);
+
 }

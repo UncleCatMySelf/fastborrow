@@ -34,4 +34,14 @@ public class TagServiceImpl implements TagService {
     public Tag findOne(Integer tagId) {
         return repository.findById(tagId).get();
     }
+
+    @Override
+    public Tag findByTagNum(Integer tagNum) {
+        return repository.findByTagNum(tagNum);
+    }
+
+    @Override
+    public Tag findByTagName(String tagName) {
+        return repository.findByTagName(tagName);
+    }
 }

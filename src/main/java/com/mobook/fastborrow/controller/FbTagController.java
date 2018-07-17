@@ -65,6 +65,12 @@ public class FbTagController {
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,bindingResult.getFieldError().getDefaultMessage(),
                     URLConstant.BASE+URLConstant.TAG_INDEX);
         }
+        Tag tagItem = tagService.findByTagNum(form.getTagNum());
+        Tag tagItem2 = tagService.findByTagName(form.getTagName());
+        if (tagItem != null || tagItem2 != null){
+            return MAVUtils.setResultMOV(MAVUriConstant.ERROR,"存在重复数据，请重新填写",
+                    URLConstant.BASE+URLConstant.TAG_INDEX);
+        }
         Tag tag = new Tag();
         try {
             if (form.getTagId() != null){
