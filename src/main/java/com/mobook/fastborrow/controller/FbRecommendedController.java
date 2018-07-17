@@ -69,7 +69,7 @@ public class FbRecommendedController {
         }else if (!StringUtils.isEmpty(mobookId) && StringUtils.isEmpty(bookName)){
             bookMessagePage = bookMessageService.findByMobookIdIsLikeAndStatusIsNot(mobookId,BookStatusEnum.DOWN.getCode(),request);
         }else{
-            bookMessagePage = bookMessageService.findByStatusIsNot(BookStatusEnum.DOWN.getCode(),request);
+            bookMessagePage = bookMessageService.findByStatusIsNotAndRecNumIs(BookStatusEnum.DOWN.getCode(),request);
         }
         map.put("bookMessagePage",bookMessagePage);
         map.put("currentPage", page);

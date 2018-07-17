@@ -28,7 +28,9 @@ public interface BookMessageService {
 
     List<BookMessage> findByRecNum(Integer recNum);
 
-    Page<BookMessage> findByStatusIsNot(Integer status,Pageable pageable);
+    Page<BookMessage> findByStatusIsNotAAndTagNum(Integer status,Integer tagNum,Pageable pageable);
+
+    Page<BookMessage> findByStatusIsNotAndRecNumIs(Integer status,Pageable pageable);
 
     Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest request);
 

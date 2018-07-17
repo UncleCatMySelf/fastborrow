@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.awt.print.Book;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;

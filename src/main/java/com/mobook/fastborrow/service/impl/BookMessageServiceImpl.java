@@ -58,7 +58,12 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public Page<BookMessage> findByStatusIsNot(Integer status, Pageable pageable) {
+    public Page<BookMessage> findByStatusIsNotAAndTagNum(Integer status,Integer tagNum, Pageable pageable) {
+        return repository.findByStatusIsNotAndTagNum(status,tagNum, pageable);
+    }
+
+    @Override
+    public Page<BookMessage> findByStatusIsNotAndRecNumIs(Integer status, Pageable pageable) {
         return repository.findByStatusIsNotAndRecNumIs(status, 0,pageable);
     }
 

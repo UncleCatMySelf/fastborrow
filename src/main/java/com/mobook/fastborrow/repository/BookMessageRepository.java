@@ -31,6 +31,8 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     Page<BookMessage> findByStatus(Integer status,Pageable pageable);
 
+    Page<BookMessage> findByStatusIsNotAndTagNum(@Param("status") Integer status,@Param("tagNum") Integer tagNum,Pageable pageable);
+
     Page<BookMessage> findByMobookIdIsLike(@Param("mobookId") String mobookId, Pageable pageable);
 
     Page<BookMessage> findByMobookIdIsLikeAndStatusIsNotAndRecNumIs(@Param("mobookId") String mobookId,@Param("status") Integer status,@Param("recNum") Integer recNum,Pageable pageable);
