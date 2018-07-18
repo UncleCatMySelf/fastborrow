@@ -3,7 +3,8 @@ package com.mobook.fastborrow.service;
 import com.mobook.fastborrow.dataobject.Collection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
  * @Author:UncleCatMySelf
@@ -18,6 +19,8 @@ public interface CollectionService {
     Collection save(Collection collection);
 
     Page<Collection> findAll(Pageable pageable);
+
+    List<Collection> findByUserIdAndColStatus(Integer userId,Integer colStatus);
 
     Integer countByUserIdAndColStatus(Integer userId, Integer colStatus);
 

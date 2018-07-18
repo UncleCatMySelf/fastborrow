@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -34,6 +36,12 @@ public class CollectionServiceImpl implements CollectionService {
     public Page<Collection> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }
+
+    @Override
+    public List<Collection> findByUserIdAndColStatus(Integer userId, Integer colStatus) {
+        return repository.findByUserIdAndColStatus(userId, colStatus);
+    }
+
 
     @Override
     public Integer countByUserIdAndColStatus(Integer userId, Integer colStatus) {
