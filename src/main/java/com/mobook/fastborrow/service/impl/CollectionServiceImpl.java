@@ -4,6 +4,8 @@ import com.mobook.fastborrow.dataobject.Collection;
 import com.mobook.fastborrow.repository.CollectionRepository;
 import com.mobook.fastborrow.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,5 +28,20 @@ public class CollectionServiceImpl implements CollectionService {
     @Override
     public Collection save(Collection collection) {
         return repository.save(collection);
+    }
+
+    @Override
+    public Page<Collection> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Integer countByUserIdAndColStatus(Integer userId, Integer colStatus) {
+        return repository.countByUserIdAndColStatus(userId, colStatus);
+    }
+
+    @Override
+    public Page<Collection> findByUserIdAndColStatus(Integer userId, Integer colStatus, Pageable pageable) {
+        return repository.findByUserIdAndColStatus(userId, colStatus, pageable);
     }
 }

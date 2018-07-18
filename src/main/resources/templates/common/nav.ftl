@@ -17,6 +17,22 @@
             </ul>
         </li>
         <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 微信用户藏书阁 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/collection/list">基本列表</a></li>
+                <li><a href="/fastborrow/admin/collection/search">单个信息</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 微信用户借书库 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/library/list">基本列表</a></li>
+                <li><a href="/fastborrow/admin/library/search">单个信息</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 图书管理 <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>

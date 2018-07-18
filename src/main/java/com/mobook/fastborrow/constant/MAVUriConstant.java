@@ -67,4 +67,10 @@ public interface MAVUriConstant {
     String USER_LIST = "user/list";
 
     String USER_MORELIST = "user/morelist";
+
+    String COLLECTION_LIST = "collection/list";
+
+    String COLLECTION_SEARCH = "collection/search";
+
+    String LIBRARY_LIST = "library/list";
 }

@@ -5,6 +5,7 @@ import com.mobook.fastborrow.constant.WXLogMsgConstant;
 import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.Collection;
 import com.mobook.fastborrow.dataobject.Recommended;
+import com.mobook.fastborrow.dataobject.User;
 import com.mobook.fastborrow.enums.CollectionStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.CollectionService;
@@ -52,6 +53,7 @@ public class ApiWXUserController {
         }
         //检查Token并获取token对应的用户id
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
         BookMessage bookMessage = bookMessageService.findOne(bookId);
         if (bookMessage != null){
             Collection item = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),bookMessage.getIsbn(),CollectionStatusEnum.COLLECTION.getCode());
@@ -61,6 +63,8 @@ public class ApiWXUserController {
                 collection.setIsbn(bookMessage.getIsbn());
                 collection.setColStatus(CollectionStatusEnum.COLLECTION.getCode());
                 collectionService.save(collection);
+                user.setCollectionNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.COLLECTION.getCode()));
+                userService.save(user);
                 return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
             }else{
                 return ResultVOUtil.error(WXLogMsgConstant.WX_REPEAT_ADD_CODE,WXLogMsgConstant.WX_REPEAT_ADD);
@@ -79,6 +83,7 @@ public class ApiWXUserController {
         }
         //检查Token并获取token对应的用户id
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
         BookMessage bookMessage = bookMessageService.findOne(bookId);
         if (bookMessage != null){
             Collection item = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),bookMessage.getIsbn(),CollectionStatusEnum.LIBRARY.getCode());
@@ -88,6 +93,8 @@ public class ApiWXUserController {
                 collection.setIsbn(bookMessage.getIsbn());
                 collection.setColStatus(CollectionStatusEnum.LIBRARY.getCode());
                 collectionService.save(collection);
+                user.setLibraryNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.LIBRARY.getCode()));
+                userService.save(user);
                 return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
             }else{
                 return ResultVOUtil.error(WXLogMsgConstant.WX_REPEAT_ADD_CODE,WXLogMsgConstant.WX_REPEAT_ADD);
@@ -106,6 +113,7 @@ public class ApiWXUserController {
         }
         //检查Token并获取token对应的用户id
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
         Recommended recommended = recommendedService.findOne(Integer.parseInt(recId));
         if (recommended == null){
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
@@ -123,6 +131,8 @@ public class ApiWXUserController {
                     collectionService.save(collection2);
                 }
             }
+            user.setCollectionNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.COLLECTION.getCode()));
+            userService.save(user);
             return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
         }
     }
@@ -136,6 +146,7 @@ public class ApiWXUserController {
         }
         //检查Token并获取token对应的用户id
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
         Recommended recommended = recommendedService.findOne(Integer.parseInt(recId));
         if (recommended == null){
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
@@ -153,6 +164,8 @@ public class ApiWXUserController {
                     collectionService.save(collection2);
                 }
             }
+            user.setLibraryNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.LIBRARY.getCode()));
+            userService.save(user);
             return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
         }
     }

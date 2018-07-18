@@ -59,6 +59,10 @@ public class User implements Serializable {
     /**用户押金*/
     private BigDecimal userDeposit;
 
+    private Integer collectionNum;
+
+    private Integer libraryNum;
+
     /**创建时间*/
     private Date createTime;
 

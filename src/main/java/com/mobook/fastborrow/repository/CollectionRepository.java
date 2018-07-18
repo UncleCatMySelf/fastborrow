@@ -1,6 +1,8 @@
 package com.mobook.fastborrow.repository;
 
 import com.mobook.fastborrow.dataobject.Collection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -14,4 +16,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Integer>
 
     Collection findByUserIdAndIsbnAndColStatus(@Param("userId") Integer userId,@Param("isbn") String isbn,@Param("colStatus") Integer colStatus);
 
+    Integer countByUserIdAndColStatus(@Param("userId") Integer userId,@Param("colStatus") Integer colStatus);
+
+    Page<Collection> findByUserIdAndColStatus(@Param("userId") Integer userId, @Param("colStatus") Integer colStatus, Pageable pageable);
 }
