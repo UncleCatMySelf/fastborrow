@@ -32,17 +32,8 @@ public class Collection implements Serializable{
     /**用户id*/
     private Integer userId;
 
-    /**书名*/
-    private String colName;
-
-    /**价格*/
-    private BigDecimal colPrice;
-
-    /**借阅次数*/
-    private Integer colNum;
-
-    /**特色简介*/
-    private String colInfo;
+    /**isbn*/
+    private String isbn;
 
     /**状态*/
     private Integer colStatus;

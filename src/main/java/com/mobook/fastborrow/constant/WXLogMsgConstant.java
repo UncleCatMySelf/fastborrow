@@ -14,9 +14,15 @@ public interface WXLogMsgConstant {
 
     Integer WX_ERRORCODE_CODE = 402;
 
+    Integer WX_REPEAT_ADD_CODE = 600;
+
+    Integer WX_SUCCESS = 777;
+
     String WX_PARAM = "参数错误，请重新传递";
 
     String WX_ERROR_OPENID = "获取session_key及openID时异常，微信内部错误";
 
     String WX_ERRORCODE = "请求失败返回ERRCODE";
+
+    String WX_REPEAT_ADD = "重复添加";
 }
