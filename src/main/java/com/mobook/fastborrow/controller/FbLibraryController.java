@@ -1,9 +1,15 @@
 package com.mobook.fastborrow.controller;
 
 import com.mobook.fastborrow.constant.MAVUriConstant;
+import com.mobook.fastborrow.dataobject.BookMessage;
+import com.mobook.fastborrow.dataobject.Collection;
 import com.mobook.fastborrow.dataobject.User;
+import com.mobook.fastborrow.enums.CollectionStatusEnum;
+import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.CollectionService;
 import com.mobook.fastborrow.service.UserService;
+import com.mobook.fastborrow.vo.CollectionVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Author:UncleCatMySelf
@@ -31,6 +39,8 @@ public class FbLibraryController {
     private CollectionService collectionService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private BookMessageService bookMessageService;
 
     @GetMapping("/list")
     public ModelAndView list(@RequestParam(value = "page",defaultValue = "1") Integer page,
@@ -43,6 +53,40 @@ public class FbLibraryController {
         map.put("currentPage", page);
         map.put("size", size);
         return new ModelAndView(MAVUriConstant.LIBRARY_LIST,map);
+    }
+
+    @GetMapping("/search")
+    public ModelAndView search(@RequestParam(value = "page",defaultValue = "1") Integer page,
+                               @RequestParam(value = "size",defaultValue = "10") Integer size,
+                               @RequestParam(value = "userId",defaultValue = "2") String userId,
+                               Map<String, Object> map){
+        PageRequest request = new PageRequest(page - 1,size);
+        Page<Collection> collectionPage = null;
+        List<CollectionVO> collectionVOList = null;
+        if (!StringUtils.isEmpty(userId)){
+            collectionPage = collectionService.findByUserIdAndColStatus(Integer.parseInt(userId),
+                    CollectionStatusEnum.LIBRARY.getCode(),request);
+            collectionVOList = collectionPage.stream().map(e ->
+                    getCollectionVO(e)
+            ).collect(Collectors.toList());
+        }
+        map.put("collectionVOList",collectionVOList);
+        map.put("collectionPage",collectionPage);
+        map.put("currentPage", page);
+        map.put("size", size);
+        map.put("userId",userId);
+        return new ModelAndView(MAVUriConstant.LIBRARY_SEARCH,map);
+    }
+
+    public CollectionVO getCollectionVO(Collection collection){
+        CollectionVO collectionVO = new CollectionVO();
+        collectionVO.setUserId(collection.getUserId());
+        collectionVO.setIsbn(collection.getIsbn());
+        User user = userService.findOne(collection.getUserId());
+        collectionVO.setUserName(user.getUserName());
+        List<BookMessage> bookMessageList = bookMessageService.findByIsbn(collection.getIsbn());
+        collectionVO.setBookName(bookMessageList.get(0).getBookName());
+        return collectionVO;
     }
 
 }

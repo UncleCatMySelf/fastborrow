@@ -73,4 +73,6 @@ public interface MAVUriConstant {
     String COLLECTION_SEARCH = "collection/search";
 
     String LIBRARY_LIST = "library/list";
+
+    String LIBRARY_SEARCH = "library/search";
 }
