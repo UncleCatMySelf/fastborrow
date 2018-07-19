@@ -269,6 +269,27 @@ public class ApiWXUserController {
         return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
     }
 
+    @PostMapping("/add_to_library")
+    public ResultVO addToLibrary(@RequestHeader("token") String token,@RequestParam("isbns") String[] isbns){
+        //检查参数
+        if (StringUtils.isEmpty(token) || isbns.length <= 0){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        for (String item : isbns){
+            Collection collection = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),
+                    item,CollectionStatusEnum.COLLECTION.getCode());
+            collection.setColStatus(CollectionStatusEnum.LIBRARY.getCode());
+            collectionService.save(collection);
+        }
+        user.setCollectionNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.COLLECTION.getCode()));
+        user.setLibraryNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.LIBRARY.getCode()));
+        userService.save(user);
+        return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
+    }
+
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();
         List<BookMessage> bookMessageList = bookMessageService.findByIsbn(e.getIsbn());
