@@ -214,6 +214,42 @@ public class ApiWXUserController {
         return ResultVOUtil.success(wxLibraryDetailVOList);
     }
 
+    /**
+     * 单个删除（藏书阁、借书库）
+     * @param token
+     * @param isbn
+     * @param state
+     * @return
+     */
+    @PostMapping("/delete_one")
+    public ResultVO deleteByCollectionOrLibrary(@RequestHeader("token") String token,
+                                                @RequestParam("isbn") String isbn,
+                                                @RequestParam("state") String state){
+        //检查参数
+        if (StringUtils.isEmpty(token) || StringUtils.isEmpty(isbn) || StringUtils.isEmpty(state)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        Collection collection = null;
+        if (state.equals("1")){//藏书阁
+            collection = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),isbn,CollectionStatusEnum.COLLECTION.getCode());
+            collection.setColStatus(CollectionStatusEnum.DOWN.getCode());
+            collectionService.save(collection);
+            user.setCollectionNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.COLLECTION.getCode()));
+            userService.save(user);
+        } else {
+            collection = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),isbn,CollectionStatusEnum.LIBRARY.getCode());
+            collection.setColStatus(CollectionStatusEnum.DOWN.getCode());
+            collectionService.save(collection);
+            user.setLibraryNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.LIBRARY.getCode()));
+            userService.save(user);
+        }
+        return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
+    }
+
+
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();
         List<BookMessage> bookMessageList = bookMessageService.findByIsbn(e.getIsbn());

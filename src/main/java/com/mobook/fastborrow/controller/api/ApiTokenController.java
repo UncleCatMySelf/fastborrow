@@ -51,6 +51,8 @@ public class ApiTokenController {
         User item = new User(nickName,null,avatarUrl,city,country,gender,province,0,new BigDecimal(0.00),new BigDecimal(0.00),null,null,null);
         item.setUserId(user.getUserId());
         item.setOpenId(user.getOpenId());
+        item.setCollectionNum(user.getCollectionNum());
+        item.setLibraryNum(user.getLibraryNum());
         userService.save(item);
         return ResultVOUtil.success();
     }
