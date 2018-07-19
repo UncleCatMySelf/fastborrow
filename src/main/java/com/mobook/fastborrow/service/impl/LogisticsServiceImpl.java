@@ -40,4 +40,9 @@ public class LogisticsServiceImpl implements LogisticsService {
     public List<Logistics> findByUserId(Integer userId) {
         return repository.findByUserId(userId);
     }
+
+    @Override
+    public void deleteOne(Integer logId) {
+        repository.deleteById(logId);
+    }
 }

@@ -20,4 +20,6 @@ public interface LogisticsService {
 
     List<Logistics> findByUserId(Integer userId);
 
+    void deleteOne(Integer logId);
+
 }
