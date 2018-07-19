@@ -1,16 +1,15 @@
 package com.mobook.fastborrow.controller.api;
 
+import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.RedisConstant;
+import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.constant.WXLogMsgConstant;
-import com.mobook.fastborrow.dataobject.BookMessage;
-import com.mobook.fastborrow.dataobject.Collection;
-import com.mobook.fastborrow.dataobject.Recommended;
-import com.mobook.fastborrow.dataobject.User;
+import com.mobook.fastborrow.dataobject.*;
 import com.mobook.fastborrow.enums.CollectionStatusEnum;
-import com.mobook.fastborrow.service.BookMessageService;
-import com.mobook.fastborrow.service.CollectionService;
-import com.mobook.fastborrow.service.RecommendedService;
-import com.mobook.fastborrow.service.UserService;
+import com.mobook.fastborrow.enums.LogisticsStatusEnum;
+import com.mobook.fastborrow.form.WxLogisticsForm;
+import com.mobook.fastborrow.service.*;
+import com.mobook.fastborrow.utils.MAVUtils;
 import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.ResultVO;
 import com.mobook.fastborrow.vo.WxCollectionDetailVO;
@@ -20,7 +19,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +47,8 @@ public class ApiWXUserController {
     private BookMessageService bookMessageService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private LogisticsService logisticsService;
 
     @PostMapping("/add_one_collection")
     public ResultVO addCollection(@RequestHeader("token") String token
@@ -287,6 +291,31 @@ public class ApiWXUserController {
         user.setCollectionNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.COLLECTION.getCode()));
         user.setLibraryNum(collectionService.countByUserIdAndColStatus(user.getUserId(),CollectionStatusEnum.LIBRARY.getCode()));
         userService.save(user);
+        return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
+    }
+
+    @PostMapping("/add_log")
+    public ResultVO addLog(@RequestHeader("token") String token, @Valid WxLogisticsForm form, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查参数
+        if (StringUtils.isEmpty(token)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        Logistics logistics = new Logistics();
+        BeanUtils.copyProperties(form,logistics);
+        logistics.setUserId(user.getUserId());
+        List<Logistics> logisticsList = logisticsService.findByUserId(user.getUserId());
+        if (logisticsList.size() <= 0){
+            logistics.setStatus(LogisticsStatusEnum.UP.getCode());
+        }else{
+            logistics.setStatus(LogisticsStatusEnum.DOWN.getCode());
+        }
+        logisticsService.save(logistics);
         return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
     }
 

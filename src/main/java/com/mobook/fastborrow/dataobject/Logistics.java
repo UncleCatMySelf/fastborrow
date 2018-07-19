@@ -43,8 +43,10 @@ public class Logistics implements Serializable {
     /**地址*/
     private String logAddress;
 
-    /**邮箱*/
-    private String logEmail;
+    /**区域*/
+    private String logRegional;
+
+    private Integer status;
 
     /**创建时间*/
     private Date createTime;
