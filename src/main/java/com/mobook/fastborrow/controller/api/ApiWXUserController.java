@@ -4,6 +4,7 @@ import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.RedisConstant;
 import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.constant.WXLogMsgConstant;
+import com.mobook.fastborrow.converter.LogisticsList2WxLogisticsVOConverter;
 import com.mobook.fastborrow.dataobject.*;
 import com.mobook.fastborrow.enums.CollectionStatusEnum;
 import com.mobook.fastborrow.enums.LogisticsStatusEnum;
@@ -14,6 +15,7 @@ import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.ResultVO;
 import com.mobook.fastborrow.vo.WxCollectionDetailVO;
 import com.mobook.fastborrow.vo.WxLibraryDetailVO;
+import com.mobook.fastborrow.vo.WxLogisticsVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -318,6 +320,21 @@ public class ApiWXUserController {
         logisticsService.save(logistics);
         return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
     }
+
+    @GetMapping("/list_log")
+    public ResultVO getListLog(@RequestHeader("token") String token){
+        //检查参数
+        if (StringUtils.isEmpty(token)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        List<Logistics> logisticsList = logisticsService.findByUserId(user.getUserId());
+        List<WxLogisticsVO> wxLogisticsVOList = LogisticsList2WxLogisticsVOConverter.convert(logisticsList);
+        return ResultVOUtil.success(wxLogisticsVOList);
+    }
+
 
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();
