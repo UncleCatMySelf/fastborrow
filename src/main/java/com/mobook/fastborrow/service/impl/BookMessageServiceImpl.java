@@ -156,4 +156,20 @@ public class BookMessageServiceImpl implements BookMessageService {
         return repository.save(bookMessage);
     }
 
+    @Override
+    public List<BookMessage> findByBookNameIsLikeAndStatusIsNot(String bookName, Integer status) {
+        return repository.findByBookNameIsLikeAndStatusIsNot("%"+bookName+"%", status);
+    }
+
+    @Override
+    public List<BookMessage> findByInfoIsLikeAndStatusIsNot(String info, Integer status) {
+        return repository.findByInfoIsLikeAndStatusIsNot("%"+info+"%", status);
+    }
+
+    @Override
+    public List<BookMessage> findByAuthorIsLikeAndStatusIsNot(String author, Integer status) {
+        return repository.findByAuthorIsLikeAndStatusIsNot("%"+author+"%", status);
+    }
+
+
 }

@@ -12,6 +12,10 @@ public interface RedisConstant {
 
     String WX_TONEKN_PREFIX = "wx_token_%s";
 
+    String WX_USER_SEARCH = "wx_user_%s";
+
     Integer EXPIRE = 7200;//2小时
+
+    Integer WX_USER_EXPIRE = 86400;//24小时
 
 }

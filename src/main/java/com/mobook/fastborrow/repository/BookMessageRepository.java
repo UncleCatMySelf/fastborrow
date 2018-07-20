@@ -59,4 +59,13 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
                                                                      @Param("status") Integer status,
                                                                      @Param("recNum") Integer recNum,
                                                                      Pageable pageable);
+
+    List<BookMessage> findByBookNameIsLikeAndStatusIsNot(@Param("bookName") String bookName,
+                                                                         @Param("status") Integer status);
+
+    List<BookMessage> findByInfoIsLikeAndStatusIsNot(@Param("info") String info,
+                                                     @Param("status") Integer status);
+
+    List<BookMessage> findByAuthorIsLikeAndStatusIsNot(@Param("author") String author,
+                                                       @Param("status") Integer status);
 }

@@ -65,4 +65,13 @@ public interface BookMessageService {
 
     BookMessage offSale(String mobookId);
 
+    List<BookMessage> findByBookNameIsLikeAndStatusIsNot( String bookName,
+                                                         Integer status);
+
+    List<BookMessage> findByInfoIsLikeAndStatusIsNot(String info,
+                                                      Integer status);
+
+    List<BookMessage> findByAuthorIsLikeAndStatusIsNot( String author,
+                                                       Integer status);
+
 }
