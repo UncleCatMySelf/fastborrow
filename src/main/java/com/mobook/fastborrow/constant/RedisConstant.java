@@ -8,11 +8,15 @@ package com.mobook.fastborrow.constant;
  */
 public interface RedisConstant {
 
+    String ZSETNAME = "search";
+
     String TOKEN_PREFIX = "token_%s";
 
     String WX_TONEKN_PREFIX = "wx_token_%s";
 
     String WX_USER_SEARCH = "wx_user_%s";
+
+    String WX_KEY = "wx_key_%s";
 
     Integer EXPIRE = 7200;//2小时
 

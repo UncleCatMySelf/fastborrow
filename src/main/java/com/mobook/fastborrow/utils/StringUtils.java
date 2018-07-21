@@ -23,8 +23,6 @@ public class StringUtils {
             return false;
         }
         for (int i = 0; i < strs.length-1;i++){
-            System.out.println(strs[i]+"-");
-            System.out.println(msg+"++");
             if (strs[i].equals(msg)){
                 return false;
             }

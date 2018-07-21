@@ -6,6 +6,7 @@ import com.mobook.fastborrow.converter.BookMessage2SearchVOConverter;
 import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.User;
 import com.mobook.fastborrow.enums.BookStatusEnum;
+import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.UserService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +43,9 @@ public class ApiSearchController {
     @Autowired
     private UserService userService;
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Autowired
     private BookMessageService bookMessageService;
 
@@ -61,9 +65,9 @@ public class ApiSearchController {
         }else{
             //用户登录---查询后去redis缓存中查找，累加。超过7条就删除最久的一个
             //检查Token并获取token对应的用户id
-            String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+            String tokenValue = stringRedisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
             User user = userService.findOne(Integer.parseInt(tokenValue));
-            String userSearchValue =  redisTemplate.opsForValue().get(String.format(RedisConstant.WX_USER_SEARCH,user.getUserId()));
+            String userSearchValue =  stringRedisTemplate.opsForValue().get(String.format(RedisConstant.WX_USER_SEARCH,user.getUserId()));
             if (StringUtils.isEmpty(userSearchValue)){
                 //第一次
                 saveToRedis(user.getUserId(),msg);
@@ -84,8 +88,24 @@ public class ApiSearchController {
                 }
             }
         }
+        echartsRedisSearch(msg);
         List<SearchVO> searchVOList = BookMessage2SearchVOConverter.convert(resultList);
         return ResultVOUtil.success(searchVOList);
+    }
+
+    //去redis查询时候存在，存在取出值+1，不存在则创建并赋值为1
+    private void echartsRedisSearch(String msg) throws FastBorrowException {
+        try {
+            Double status = redisTemplate.opsForZSet().score(RedisConstant.ZSETNAME,msg);
+            if (status == null){//空第一次
+                //不存在
+                redisTemplate.opsForZSet().add(RedisConstant.ZSETNAME,msg,1);
+            }else{//不为空第二次
+                redisTemplate.opsForZSet().incrementScore(RedisConstant.ZSETNAME,msg,1);
+            }
+        }catch (Exception e){
+            redisTemplate.opsForZSet().add(RedisConstant.ZSETNAME,msg,1);
+        }
     }
 
     private List<BookMessage> race(List<BookMessage> bookMessageList1,List<BookMessage> bookMessageList2,List<BookMessage> bookMessageList3) {
@@ -114,7 +134,7 @@ public class ApiSearchController {
 
     private void saveToRedis(Integer userId,String msg) {
         Integer expire = RedisConstant.WX_USER_EXPIRE;
-        redisTemplate.opsForValue().set(String.format(RedisConstant.WX_USER_SEARCH ,userId),msg,expire, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(String.format(RedisConstant.WX_USER_SEARCH ,userId),msg,expire, TimeUnit.MINUTES);
     }
 
 
