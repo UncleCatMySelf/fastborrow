@@ -75,4 +75,6 @@ public interface MAVUriConstant {
     String LIBRARY_LIST = "library/list";
 
     String LIBRARY_SEARCH = "library/search";
+
+    String RECEIVE_SEARCH = "receive/search";
 }

@@ -4,6 +4,8 @@ import com.mobook.fastborrow.dataobject.Logistics;
 import com.mobook.fastborrow.repository.LogisticsRepository;
 import com.mobook.fastborrow.service.LogisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,11 @@ public class LogisticsServiceImpl implements LogisticsService {
     }
 
     @Override
+    public Page<Logistics> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    @Override
     public Logistics findOne(Integer logId) {
         return repository.findById(logId).get();
     }
@@ -39,6 +46,11 @@ public class LogisticsServiceImpl implements LogisticsService {
     @Override
     public List<Logistics> findByUserId(Integer userId) {
         return repository.findByUserId(userId);
+    }
+
+    @Override
+    public Page<Logistics> findByUserId(Integer userId, Pageable pageable) {
+        return repository.findByUserId(userId, pageable);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.mobook.fastborrow.service;
 
 import com.mobook.fastborrow.dataobject.Logistics;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,9 +18,13 @@ public interface LogisticsService {
 
     List<Logistics> findAll();
 
+    Page<Logistics> findAll(Pageable pageable);
+
     Logistics findOne(Integer logId);
 
     List<Logistics> findByUserId(Integer userId);
+
+    Page<Logistics> findByUserId(Integer userId, Pageable pageable);
 
     void deleteOne(Integer logId);
 

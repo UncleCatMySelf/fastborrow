@@ -1,6 +1,8 @@
 package com.mobook.fastborrow.repository;
 
 import com.mobook.fastborrow.dataobject.Logistics;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -14,5 +16,7 @@ import java.util.List;
 public interface LogisticsRepository extends JpaRepository<Logistics, Integer> {
 
     List<Logistics> findByUserId(Integer userId);
+
+    Page<Logistics> findByUserId(Integer userId, Pageable pageable);
 
 }
