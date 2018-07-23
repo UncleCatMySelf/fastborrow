@@ -149,6 +149,9 @@ public class FbBookMessageController {
                 inventory.setIsbn(form.getIsbn());
             }
             BeanUtils.copyProperties(form,bookMessage);
+            bookMessage.setInfo(bookMessage.getInfo().trim());
+            bookMessage.setSummary(bookMessage.getSummary().trim());
+            bookMessage.setCatalog(bookMessage.getCatalog().trim());
             bookMessageService.save(bookMessage);
             inventoryService.save(inventory);
         } catch (FastBorrowException e){

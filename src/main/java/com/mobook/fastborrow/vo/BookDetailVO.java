@@ -27,6 +27,8 @@ public class BookDetailVO {
 
     private String info;
 
+    private String summary;
+
     @JsonProperty("url")
     private String images;
 
