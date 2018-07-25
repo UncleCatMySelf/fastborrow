@@ -1,0 +1,24 @@
+{
+  "mappings":{
+    "book":{
+      "dynamic":false,
+      "properties":{
+        "name":{
+          "type":"text"
+        },
+        "isbn":{
+          "type":"text"
+        },
+        "author":{
+          "type":"text"
+        },
+        "num":{
+          "type":"integer"
+        },
+        "tag_num":{
+          "type":"integer"
+        }
+      }
+    }
+  }
+}
