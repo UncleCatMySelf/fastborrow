@@ -23,20 +23,18 @@ import java.util.Date;
 public class Inventory implements Serializable {
     private static final long serialVersionUID = 5075070433054641745L;
 
-    /**墨书id*/
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String bookName;
+    private String mobookId;
 
     private String isbn;
 
-    /**总库存数*/
-    private Integer num;
+    private String whereTag;
 
-    /**现存数*/
-    private Integer statusNum;
+    /**状态*/
+    private Integer status;
 
     /**创建时间*/
     private Date createTime;

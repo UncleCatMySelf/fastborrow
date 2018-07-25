@@ -25,21 +25,14 @@ public class BookMessage implements Serializable {
 
     private static final long serialVersionUID = -2014260536154596949L;
 
-    /**墨书Id生成*/
     @Id
-    private String mobookId;
+    private String isbn;
 
     /**书名*/
     private String bookName;
 
-    /**ISBN*/
-    private String isbn;
-
     /**价格*/
     private BigDecimal price;
-
-    /**位置*/
-    private String whereTag;
 
     /**作者*/
     private String author;
@@ -64,6 +57,9 @@ public class BookMessage implements Serializable {
 
     /**封面*/
     private String images;
+
+    /**封面*/
+    private String images2;
 
     /**标签*/
     private String lable;

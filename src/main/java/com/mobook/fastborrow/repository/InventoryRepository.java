@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -14,13 +16,10 @@ import org.springframework.data.repository.query.Param;
  */
 public interface InventoryRepository extends JpaRepository<Inventory,Integer> {
 
-    Inventory findByIsbn(String isbn);
+    List<Inventory> findByIsbn(String isbn);
 
     Page<Inventory> findByIsbnIsLike(@Param("isbn") String isbn,Pageable pageable);
 
-    Page<Inventory> findByBookNameIsLike(@Param("bookName") String bookName, Pageable pageable);
+    List<Inventory> findByWhereTag(String whereTag);
 
-    Page<Inventory> findByIsbnIsLikeAndBookNameIsLike(@Param("isbn") String isbn,
-                                                      @Param("bookName") String bookName,
-                                                      Pageable pageable);
 }

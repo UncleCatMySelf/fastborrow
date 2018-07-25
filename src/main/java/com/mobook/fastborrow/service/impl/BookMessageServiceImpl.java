@@ -38,14 +38,19 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public BookMessage findOne(String mobookId) {
-        return repository.findById(mobookId).get();
+    public BookMessage findOne(String isbn) {
+        return repository.findById(isbn).get();
     }
 
     @Override
-    public List<BookMessage> findByWhereTag(String whereTag) {
-        return repository.findByWhereTag(whereTag);
+    public Integer countByIsbn(String isbn) {
+        return repository.countByIsbn(isbn);
     }
+
+//    @Override
+//    public List<BookMessage> findByWhereTag(String whereTag) {
+//        return repository.findByWhereTag(whereTag);
+//    }
 
     @Override
     public List<BookMessage> findByTagNum(Integer tagNum) {
@@ -68,8 +73,8 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest pageable) {
-        return repository.findByMobookIdIsLikeAndBookNameIsLike("%"+mobookId+"%"
+    public Page<BookMessage> findByIsbnAndBookName(String isbn, String bookName, PageRequest pageable) {
+        return repository.findByIsbnIsLikeAndBookNameIsLike("%"+isbn+"%"
                 ,"%"+bookName+"%",pageable);
     }
 
@@ -79,18 +84,18 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public Page<BookMessage> findByMobookId(String mobookId, PageRequest pageable) {
-        return repository.findByMobookIdIsLike("%"+mobookId+"%",pageable);
+    public Page<BookMessage> findByIsbn(String isbn, PageRequest pageable) {
+        return repository.findByIsbnIsLike("%"+isbn+"%",pageable);
     }
 
     @Override
-    public Page<BookMessage> findByMobookIdIsLikeAndStatus(String mobookId, Integer status, Pageable pageable) {
-        return repository.findByMobookIdIsLikeAndStatus("%"+mobookId+"%",status,pageable);
+    public Page<BookMessage> findByIsbnIsLikeAndStatus(String isbn, Integer status, Pageable pageable) {
+        return repository.findByIsbnIsLikeAndStatus("%"+isbn+"%",status,pageable);
     }
 
     @Override
-    public Page<BookMessage> findByMobookIdIsLikeAndStatusIsNot(String mobookId, Integer status, Pageable pageable) {
-        return repository.findByMobookIdIsLikeAndStatusIsNotAndRecNumIs("%"+mobookId+"%", status,0, pageable);
+    public Page<BookMessage> findByIsbnIsLikeAndStatusIsNot(String isbn, Integer status, Pageable pageable) {
+        return repository.findByIsbnIsLikeAndStatusIsNotAndRecNumIs("%"+isbn+"%", status,0, pageable);
     }
 
     @Override
@@ -104,13 +109,13 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId, String bookName, Integer status, Pageable pageable) {
-        return repository.findByMobookIdIsLikeAndBookNameIsLikeAndStatus("%"+mobookId+"%", "%"+bookName+"%", status, pageable);
+    public Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatus(String isbn, String bookName, Integer status, Pageable pageable) {
+        return repository.findByIsbnIsLikeAndBookNameIsLikeAndStatus("%"+isbn+"%", "%"+bookName+"%", status, pageable);
     }
 
     @Override
-    public Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNot(String mobookId, String bookName, Integer status, Pageable pageable) {
-        return repository.findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs("%"+mobookId+"%", "%"+bookName+"%", status,0, pageable);
+    public Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatusIsNot(String isbn, String bookName, Integer status, Pageable pageable) {
+        return repository.findByIsbnIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs("%"+isbn+"%", "%"+bookName+"%", status,0, pageable);
     }
 
     @Override
@@ -119,18 +124,13 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public List<BookMessage> findByIsbn(String isbn) {
-        return repository.findByIsbn(isbn);
-    }
-
-    @Override
     public List<BookMessage> findByStatus(Integer status) {
         return repository.findByStatus(status);
     }
 
     @Override
-    public BookMessage onSale(String mobookId) {
-        BookMessage bookMessage = repository.findById(mobookId).get();
+    public BookMessage onSale(String isbn) {
+        BookMessage bookMessage = repository.findById(isbn).get();
         if (bookMessage == null){
             throw new FastBorrowException(ResultEnum.BOOK_NOT_EXIT);
         }
@@ -143,8 +143,8 @@ public class BookMessageServiceImpl implements BookMessageService {
     }
 
     @Override
-    public BookMessage offSale(String mobookId) {
-        BookMessage bookMessage = repository.findById(mobookId).get();
+    public BookMessage offSale(String isbn) {
+        BookMessage bookMessage = repository.findById(isbn).get();
         if (bookMessage == null){
             throw new FastBorrowException(ResultEnum.BOOK_NOT_EXIT);
         }

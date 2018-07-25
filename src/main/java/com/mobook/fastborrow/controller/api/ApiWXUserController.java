@@ -355,15 +355,15 @@ public class ApiWXUserController {
 
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();
-        List<BookMessage> bookMessageList = bookMessageService.findByIsbn(e.getIsbn());
-        BeanUtils.copyProperties(bookMessageList.get(0),item);
+        BookMessage bookMessage = bookMessageService.findOne(e.getIsbn());
+        BeanUtils.copyProperties(bookMessage,item);
         return item;
     }
 
     private WxCollectionDetailVO change2WxCollectionDetailVO(Collection collection){
         WxCollectionDetailVO item = new WxCollectionDetailVO();
-        List<BookMessage> bookMessageList = bookMessageService.findByIsbn(collection.getIsbn());
-        BeanUtils.copyProperties(bookMessageList.get(0),item);
+        BookMessage bookMessage = bookMessageService.findOne(collection.getIsbn());
+        BeanUtils.copyProperties(bookMessage,item);
         return item;
     }
 

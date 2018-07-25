@@ -84,8 +84,8 @@ public class FbLibraryController {
         collectionVO.setIsbn(collection.getIsbn());
         User user = userService.findOne(collection.getUserId());
         collectionVO.setUserName(user.getUserName());
-        List<BookMessage> bookMessageList = bookMessageService.findByIsbn(collection.getIsbn());
-        collectionVO.setBookName(bookMessageList.get(0).getBookName());
+        BookMessage bookMessage = bookMessageService.findOne(collection.getIsbn());
+        collectionVO.setBookName(bookMessage.getBookName());
         return collectionVO;
     }
 

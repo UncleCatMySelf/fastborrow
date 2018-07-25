@@ -23,10 +23,6 @@
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control" id="isbn" name="isbn" value="${sIsbn!''}" />
                                     </div>
-                                    <label for="bookName" class="col-sm-1 control-label">图书名称</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="bookName" name="bookName" value="${sBookName!''}" />
-                                    </div>
                                     <button type="submit" class="col-sm-2 btn btn-default">搜索</button>
                                 </div>
                             </form>
@@ -37,17 +33,19 @@
                                 <tr>
                                     <th>书名</th>
                                     <th>ISBN</th>
+                                    <th>在库</th>
+                                    <th>借出</th>
                                     <th>总量</th>
-                                    <th>现存</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <#list inventoriePage.content as inventory>
+                                <#list inventorieBackVOList as inventorieBackVO>
                                 <tr>
-                                    <td>${inventory.bookName}</td>
-                                    <td>${inventory.isbn}</td>
-                                    <td>${inventory.num}</td>
-                                    <td>${inventory.statusNum}</td>
+                                    <td>${inventorieBackVO.bookName}</td>
+                                    <td>${inventorieBackVO.isbn}</td>
+                                    <td>${inventorieBackVO.numIn}</td>
+                                    <td>${inventorieBackVO.numOut}</td>
+                                    <td>${inventorieBackVO.sum}</td>
                                 </tr>
                                 </#list>
                                 </tbody>
@@ -63,14 +61,14 @@
                             <li><a href="/fastborrow/admin/inventory/search?page=${currentPage - 1}&size=${size}">上一页</a></li>
                         </#if>
 
-                        <#list 1..inventoriePage.getTotalPages() as index>
+                        <#list 1..bookMessageList.getTotalPages() as index>
                             <#if currentPage == index>
                                 <li class="disabled"><a href="#">${index}</a></li>
                             <#else>
                                 <li><a href="/fastborrow/admin/inventory/search?page=${index}&size=${size}">${index}</a></li>
                             </#if>
                         </#list>
-                        <#if currentPage gte inventoriePage.getTotalPages()>
+                        <#if currentPage gte bookMessageList.getTotalPages()>
                             <li class="disabled"><a href="#">下一页</a></li>
                         <#else>
                             <li><a href="/fastborrow/admin/inventory/search?page=${currentPage + 1}&size=${size}">下一页</a></li>

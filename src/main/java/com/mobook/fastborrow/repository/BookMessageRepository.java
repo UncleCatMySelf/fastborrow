@@ -19,7 +19,11 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     List<BookMessage> findByIsbn(String isbn);
 
-    List<BookMessage> findByWhereTag(String whereTag);
+    Integer countByIsbn(String isbn);
+
+    Page<BookMessage> findByIsbn(String isbn,Pageable pageable);
+
+//    List<BookMessage> findByWhereTag(String whereTag);
 
     List<BookMessage> findByTagNum(Integer tagNum);
 
@@ -33,11 +37,11 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     Page<BookMessage> findByStatusIsNotAndTagNum(@Param("status") Integer status,@Param("tagNum") Integer tagNum,Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLike(@Param("mobookId") String mobookId, Pageable pageable);
+    Page<BookMessage> findByIsbnIsLike(@Param("isbn") String isbn, Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndStatusIsNotAndRecNumIs(@Param("mobookId") String mobookId,@Param("status") Integer status,@Param("recNum") Integer recNum,Pageable pageable);
+    Page<BookMessage> findByIsbnIsLikeAndStatusIsNotAndRecNumIs(@Param("isbn") String isbn,@Param("status") Integer status,@Param("recNum") Integer recNum,Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndStatus(@Param("mobookId") String mobookId,@Param("status") Integer status ,Pageable pageable);
+    Page<BookMessage> findByIsbnIsLikeAndStatus(@Param("isbn") String isbn,@Param("status") Integer status ,Pageable pageable);
 
     Page<BookMessage> findByBookNameIsLike(@Param("bookName") String bookName, Pageable pageable);
 
@@ -45,16 +49,16 @@ public interface BookMessageRepository extends JpaRepository<BookMessage, String
 
     Page<BookMessage> findByBookNameIsLikeAndStatusIsNotAndRecNumIs(@Param("bookName") String bookName,@Param("status") Integer status ,@Param("recNum") Integer recNum, Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLike(@Param("mobookId") String mobookId,
+    Page<BookMessage> findByIsbnIsLikeAndBookNameIsLike(@Param("isbn") String isbn,
                                                             @Param("bookName") String bookName,
                                                             Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(@Param("mobookId") String mobookId,
+    Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatus(@Param("isbn") String isbn,
                                                             @Param("bookName") String bookName,
                                                             @Param("status") Integer status,
                                                             Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs(@Param("mobookId") String mobookId,
+    Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatusIsNotAndRecNumIs(@Param("isbn") String isbn,
                                                                      @Param("bookName") String bookName,
                                                                      @Param("status") Integer status,
                                                                      @Param("recNum") Integer recNum,

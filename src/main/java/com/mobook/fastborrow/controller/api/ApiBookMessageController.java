@@ -67,14 +67,14 @@ public class ApiBookMessageController {
     public ResultVO<BookDetailVO> getBookDetail(@RequestParam("mobookId") String mobookId){
         BookMessage bookMessage = bookMessageService.findOne(mobookId);
         BookDetailVO bookDetailVO = BookMessage2BookDetailVoConverter.convert(bookMessage);
-        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
-        if (inventory.getStatusNum() > 0){
-            //有货
-            bookDetailVO.setInventoryState(InventoryStatusEnum.YES.getCode());
-        }else{
-            //无货
-            bookDetailVO.setInventoryState(InventoryStatusEnum.NO.getCode());
-        }
+//        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
+//        if (inventory.getStatusNum() > 0){
+//            //有货
+//            bookDetailVO.setInventoryState(InventoryStatusEnum.YES.getCode());
+//        }else{
+//            //无货
+//            bookDetailVO.setInventoryState(InventoryStatusEnum.NO.getCode());
+//        }
         return ResultVOUtil.success(bookDetailVO);
     }
 

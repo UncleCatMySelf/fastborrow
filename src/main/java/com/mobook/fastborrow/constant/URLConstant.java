@@ -48,4 +48,6 @@ public interface URLConstant {
 
     String USER_LIST = "admin/user/list";
 
+    String INVEN_INDEX = "admin/inventory/index";
+
 }

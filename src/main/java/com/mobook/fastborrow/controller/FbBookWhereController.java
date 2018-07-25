@@ -5,10 +5,12 @@ import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.BookWhere;
+import com.mobook.fastborrow.dataobject.Inventory;
 import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.form.BookWhereForm;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.BookWhereService;
+import com.mobook.fastborrow.service.InventoryService;
 import com.mobook.fastborrow.utils.MAVUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +39,7 @@ public class FbBookWhereController {
     @Autowired
     private BookWhereService bookWhereService;
     @Autowired
-    private BookMessageService bookMessageService;
+    private InventoryService inventoryService;
 
     @GetMapping("/list")
     public ModelAndView list(Map<String,Object> map){
@@ -73,8 +75,8 @@ public class FbBookWhereController {
         try {
             if (form.getId() != null){
                 bookWhere = bookWhereService.findOne(form.getId());
-                List<BookMessage> bookMessageList = bookMessageService.findByWhereTag(bookWhere.getWhereTag());
-                if (bookMessageList.size() > 0){
+                List<Inventory> inventoryList = inventoryService.findByWhereTag(bookWhere.getWhereTag());
+                if (inventoryList.size() > 0){
                     return MAVUtils.setResultMOV(MAVUriConstant.ERROR, LogMsgConstant.TYPE_UESING,
                             URLConstant.BASE+URLConstant.BOOKWHERE_LIST);
                 }

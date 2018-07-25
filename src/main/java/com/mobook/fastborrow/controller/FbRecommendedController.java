@@ -46,7 +46,7 @@ public class FbRecommendedController {
     @GetMapping("/index")
     public ModelAndView index(@RequestParam(value = "page",defaultValue = "1") Integer page,
                               @RequestParam(value = "size",defaultValue = "10") Integer size,
-                              @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                              @RequestParam(value = "isbn",defaultValue = "") String isbn,
                               @RequestParam(value = "bookName",defaultValue = "") String bookName,
                               @RequestParam(value = "id",required = false)Integer id,
                               @RequestParam(value = "title",defaultValue = "")String title,
@@ -62,12 +62,12 @@ public class FbRecommendedController {
             Recommended recommended = recommendedService.findOne(id);
             map.put("recommended",recommended);
         }
-        if (!StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNot(mobookId,bookName, BookStatusEnum.DOWN.getCode(),request);
-        }else if (StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
+        if (!StringUtils.isEmpty(isbn) && !StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbnIsLikeAndBookNameIsLikeAndStatusIsNot(isbn,bookName, BookStatusEnum.DOWN.getCode(),request);
+        }else if (StringUtils.isEmpty(isbn) && !StringUtils.isEmpty(bookName)){
             bookMessagePage = bookMessageService.findByBookNameIsLikeAndStatusIsNot(bookName,BookStatusEnum.DOWN.getCode(),request);
-        }else if (!StringUtils.isEmpty(mobookId) && StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndStatusIsNot(mobookId,BookStatusEnum.DOWN.getCode(),request);
+        }else if (!StringUtils.isEmpty(isbn) && StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbnIsLikeAndStatusIsNot(isbn,BookStatusEnum.DOWN.getCode(),request);
         }else{
             bookMessagePage = bookMessageService.findByStatusIsNotAndRecNumIs(BookStatusEnum.DOWN.getCode(),request);
         }
@@ -80,7 +80,7 @@ public class FbRecommendedController {
         map.put("time",time);
         map.put("images",images);
         map.put("cssstatus",cssstatus);
-        map.put("sMobookId",mobookId);
+        map.put("sIsbn",isbn);
         map.put("sBookName",bookName);
         return new ModelAndView(MAVUriConstant.REC_INDEX,map);
     }
@@ -101,7 +101,7 @@ public class FbRecommendedController {
             recommended.setCss(form.getCssstatus());
             Recommended saveItem = recommendedService.save(recommended);
             for (String bookMessid : form.getBookMessIdList()){
-                System.err.println(bookMessid);
+                //System.err.println(bookMessid);
                 BookMessage bookMessage = bookMessageService.findOne(bookMessid);
                 bookMessage.setRecNum(saveItem.getId());
                 bookMessageService.save(bookMessage);

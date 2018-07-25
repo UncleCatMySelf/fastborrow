@@ -16,8 +16,6 @@ import java.math.BigDecimal;
 @Data
 public class BookMessageForm {
 
-    private String mobookId;
-
     /**书名*/
     @NotEmpty(message = "书名不能为空")
     private String bookName;
@@ -64,6 +62,10 @@ public class BookMessageForm {
     /**封面*/
     @NotEmpty(message = "封面不能为空")
     private String images;
+
+    /**封面*/
+    @NotEmpty(message = "封面不能为空")
+    private String images2;
 
     /**标签*/
     @NotEmpty(message = "标签不能为空")

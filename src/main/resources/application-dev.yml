@@ -3,18 +3,24 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-    url: jdbc:mysql://192.168.1.130/fastborrow?characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/fastborrow?characterEncoding=utf-8&useSSL=false
+#    password: Root2018!
+#    url: jdbc:mysql://120.77.152.252:3306/fastborrow?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
   jackson:
     default-property-inclusion: non_null
   redis:
-    host: 192.168.1.111
+    host: 120.77.152.252
     port: 6379
 server:
   servlet:
     context-path: /fastborrow
-#  port: 8090
+#  port: 80
+#  ssl:
+#    key-store: classpath:www.mobook.xin.jks
+#    key-store-password: mobook2017
+#    key-password: mobook2017
 logging:
   level:
     com.myself.sbdiancan.dataobject.mapper: trace

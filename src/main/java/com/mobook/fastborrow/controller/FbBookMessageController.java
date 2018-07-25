@@ -61,12 +61,10 @@ public class FbBookMessageController {
                              Map<String, Object> map){
         PageRequest request = new PageRequest(page - 1,size);
         Page<BookMessage> bookMessagePage = bookMessageService.findAll(request);
-        List<BookWhere> bookWhereList = bookWhereService.findAll();
         //查询所有分类
         List<Tag> tagList = tagService.findAll();
         map.put("tagList",tagList);
         map.put("bookMessagePage",bookMessagePage);
-        map.put("bookWhereList",bookWhereList);
         map.put("currentPage", page);
         map.put("size", size);
         return new ModelAndView(MAVUriConstant.BOOK_LITS,map);
@@ -76,7 +74,7 @@ public class FbBookMessageController {
      * 查询存在分页bug
      * @param page
      * @param size
-     * @param mobookId
+     * @param sIsbn
      * @param bookName
      * @param map
      * @return
@@ -84,42 +82,37 @@ public class FbBookMessageController {
     @GetMapping("/search")
     public ModelAndView search(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                @RequestParam(value = "size",defaultValue = "10") Integer size,
-                               @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                               @RequestParam(value = "sIsbn",defaultValue = "") String sIsbn,
                                @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
         PageRequest request = new PageRequest(page - 1,size);
         Page<BookMessage> bookMessagePage = null;
-        if (!StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookIdAndBookName(mobookId,bookName,request);
-        }else if (StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
+        if (!StringUtils.isEmpty(sIsbn) && !StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbnAndBookName(sIsbn,bookName,request);
+        }else if (StringUtils.isEmpty(sIsbn) && !StringUtils.isEmpty(bookName)){
             bookMessagePage = bookMessageService.findByBookName(bookName,request);
-        }else if (!StringUtils.isEmpty(mobookId) && StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookId(mobookId,request);
+        }else if (!StringUtils.isEmpty(sIsbn) && StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbn(sIsbn,request);
         }else {
             bookMessagePage = bookMessageService.findAll(request);
         }
-        List<BookWhere> bookWhereList = bookWhereService.findAll();
         //查询所有分类
         List<Tag> tagList = tagService.findAll();
         map.put("tagList",tagList);
         map.put("bookMessagePage",bookMessagePage);
-        map.put("bookWhereList",bookWhereList);
         map.put("currentPage", page);
         map.put("size", size);
-        map.put("sMobookId",mobookId);
+        map.put("sIsbn",sIsbn);
         map.put("sBookName",bookName);
         return new ModelAndView(MAVUriConstant.BOOK_LITS,map);
     }
 
     @GetMapping("/index")
-    public ModelAndView index(@RequestParam(value = "mobookId", required = false) String mobookId,
+    public ModelAndView index(@RequestParam(value = "isbn", required = false) String isbn,
                               Map<String,Object> map){
-        if (mobookId != null){
-            BookMessage bookMessage = bookMessageService.findOne(mobookId);
+        if (isbn != null){
+            BookMessage bookMessage = bookMessageService.findOne(isbn);
             map.put("bookMessage",bookMessage);
         }
-        //查询所有位置
-        List<BookWhere> bookWhereList = bookWhereService.findAll();
-        map.put("bookWhereList",bookWhereList);
         //查询所有分类
         List<Tag> tagList = tagService.findAll();
         map.put("tagList",tagList);
@@ -137,17 +130,19 @@ public class FbBookMessageController {
         Inventory inventory = new Inventory();
         try {
             // id空则新增
-            if (!StringUtils.isEmpty(form.getMobookId())){
-                bookMessage = bookMessageService.findOne(form.getMobookId());
-            }else{
-                //墨书id生成
-                String keyId = KeyUtil.getMobookKey(form.getTagNum());
-                form.setMobookId(keyId);
-                inventory.setNum(1);
-                inventory.setStatusNum(1);
-                inventory.setBookName(form.getBookName());
-                inventory.setIsbn(form.getIsbn());
+            if (bookMessageService.countByIsbn(form.getIsbn()) > 0){
+                return MAVUtils.setResultMOV(MAVUriConstant.ERROR,"此书已存在,请针对ISBN进行修改",
+                                URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
             }
+//            //else{
+//                //墨书id生成
+////                String keyId = KeyUtil.getMobookKey(form.getTagNum());
+////                form.setMobookId(keyId);
+////                inventory.setNum(1);
+////                inventory.setStatusNum(1);
+////                inventory.setBookName(form.getBookName());
+////                inventory.setIsbn(form.getIsbn());
+//            //}
             BeanUtils.copyProperties(form,bookMessage);
             bookMessage.setInfo(bookMessage.getInfo().trim());
             bookMessage.setSummary(bookMessage.getSummary().trim());
@@ -163,9 +158,9 @@ public class FbBookMessageController {
     }
 
     @RequestMapping("/on_sale")
-    public ModelAndView onSale(@RequestParam("mobookId") String mobookId){
+    public ModelAndView onSale(@RequestParam("isbn") String isbn){
         try {
-            bookMessageService.onSale(mobookId);
+            bookMessageService.onSale(isbn);
         }catch (FastBorrowException e){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
@@ -175,9 +170,9 @@ public class FbBookMessageController {
     }
 
     @RequestMapping("/off_sale")
-    public ModelAndView offSale(@RequestParam("mobookId") String mobookId){
+    public ModelAndView offSale(@RequestParam("isbn") String isbn){
         try {
-            bookMessageService.offSale(mobookId);
+            bookMessageService.offSale(isbn);
         }catch (FastBorrowException e){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
@@ -214,27 +209,25 @@ public class FbBookMessageController {
         return new ModelAndView(MAVUriConstant.BOOK_WLITS, XXList(BookStatusEnum.WINNING.getCode(),map));
     }
 
-    private Map<String,Object> XXSearch(Integer page,Integer size,String mobookId,String bookName,Map<String, Object> map){
+    private Map<String,Object> XXSearch(Integer page,Integer size,String isbn,String bookName,Map<String, Object> map){
         PageRequest request = new PageRequest(page - 1,size);
         Page<BookMessage> bookMessagePage = null;
-        if (!StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndBookNameIsLikeAndStatus(mobookId,bookName,BookStatusEnum.UP.getCode(),request);
-        }else if (StringUtils.isEmpty(mobookId) && !StringUtils.isEmpty(bookName)){
+        if (!StringUtils.isEmpty(isbn) && !StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbnIsLikeAndBookNameIsLikeAndStatus(isbn,bookName,BookStatusEnum.UP.getCode(),request);
+        }else if (StringUtils.isEmpty(isbn) && !StringUtils.isEmpty(bookName)){
             bookMessagePage = bookMessageService.findByBookNameIsLikeAndStatus(bookName,BookStatusEnum.UP.getCode(),request);
-        }else if (!StringUtils.isEmpty(mobookId) && StringUtils.isEmpty(bookName)){
-            bookMessagePage = bookMessageService.findByMobookIdIsLikeAndStatus(mobookId,BookStatusEnum.UP.getCode(),request);
+        }else if (!StringUtils.isEmpty(isbn) && StringUtils.isEmpty(bookName)){
+            bookMessagePage = bookMessageService.findByIsbnIsLikeAndStatus(isbn,BookStatusEnum.UP.getCode(),request);
         }else{
             bookMessagePage = bookMessageService.findByStatus(BookStatusEnum.UP.getCode(),request);
         }
-        List<BookWhere> bookWhereList = bookWhereService.findAll();
         //查询所有分类
         List<Tag> tagList = tagService.findAll();
         map.put("tagList",tagList);
         map.put("bookMessagePage",bookMessagePage);
-        map.put("bookWhereList",bookWhereList);
         map.put("currentPage", page);
         map.put("size", size);
-        map.put("sMobookId",mobookId);
+        map.put("sIsbn",isbn);
         map.put("sBookName",bookName);
         return map;
     }
@@ -242,39 +235,39 @@ public class FbBookMessageController {
     @GetMapping("/hots_search")
     public ModelAndView hotSsearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                  @RequestParam(value = "size",defaultValue = "10") Integer size,
-                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "isbn",defaultValue = "") String isbn,
                                  @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
-        return new ModelAndView(MAVUriConstant.HOTS_INDEX, XXSearch(page, size, mobookId, bookName, map));
+        return new ModelAndView(MAVUriConstant.HOTS_INDEX, XXSearch(page, size, isbn, bookName, map));
     }
 
 
     @GetMapping("/nb_search")
     public ModelAndView nbSearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                  @RequestParam(value = "size",defaultValue = "10") Integer size,
-                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "isbn",defaultValue = "") String isbn,
                                  @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
-        return new ModelAndView(MAVUriConstant.BOOK_NBINDEX, XXSearch(page, size, mobookId, bookName, map));
+        return new ModelAndView(MAVUriConstant.BOOK_NBINDEX, XXSearch(page, size, isbn, bookName, map));
     }
 
     @GetMapping("/zb_search")
     public ModelAndView zbSearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                  @RequestParam(value = "size",defaultValue = "10") Integer size,
-                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "isbn",defaultValue = "") String isbn,
                                  @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
-        return new ModelAndView(MAVUriConstant.BOOK_ZBINDEX, XXSearch(page, size, mobookId, bookName, map));
+        return new ModelAndView(MAVUriConstant.BOOK_ZBINDEX, XXSearch(page, size, isbn, bookName, map));
     }
 
     @GetMapping("/w_search")
     public ModelAndView wSearch(@RequestParam(value = "page",defaultValue = "1") Integer page,
                                  @RequestParam(value = "size",defaultValue = "10") Integer size,
-                                 @RequestParam(value = "mobookId",defaultValue = "") String mobookId,
+                                 @RequestParam(value = "isbn",defaultValue = "") String isbn,
                                  @RequestParam(value = "bookName",defaultValue = "") String bookName,Map<String, Object> map){
-        return new ModelAndView(MAVUriConstant.BOOK_WINDEX, XXSearch(page, size, mobookId, bookName, map));
+        return new ModelAndView(MAVUriConstant.BOOK_WINDEX, XXSearch(page, size, isbn, bookName, map));
     }
 
     @GetMapping("/nb_add")
-    public ModelAndView nbAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+    public ModelAndView nbAdd(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        BookMessage bookMessage = bookMessageService.findOne(isbn);
         bookMessage.setStatus(BookStatusEnum.NEWBOOK.getCode());
         bookMessageService.save(bookMessage);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
@@ -282,13 +275,13 @@ public class FbBookMessageController {
     }
 
     @GetMapping("/hots_add")
-    public ModelAndView hotsAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
+    public ModelAndView hotsAdd(@RequestParam(value = "isbn",defaultValue = "") String isbn){
         List<BookMessage> bookMessageList = bookMessageService.findByStatus(BookStatusEnum.HOTSEARCH.getCode());
         if (bookMessageList.size() >= 4){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,null,
                     URLConstant.BASE+URLConstant.HOTS_SEARCH_LIST);
         }else {
-            BookMessage bookMessage = bookMessageService.findOne(mobookId);
+            BookMessage bookMessage = bookMessageService.findOne(isbn);
             bookMessage.setStatus(BookStatusEnum.HOTSEARCH.getCode());
             bookMessageService.save(bookMessage);
             return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
@@ -297,8 +290,8 @@ public class FbBookMessageController {
     }
 
     @GetMapping("/zb_add")
-    public ModelAndView zbAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+    public ModelAndView zbAdd(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        BookMessage bookMessage = bookMessageService.findOne(isbn);
         bookMessage.setStatus(BookStatusEnum.EDITOR.getCode());
         bookMessageService.save(bookMessage);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
@@ -306,45 +299,45 @@ public class FbBookMessageController {
     }
 
     @GetMapping("/w_add")
-    public ModelAndView wAdd(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+    public ModelAndView wAdd(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        BookMessage bookMessage = bookMessageService.findOne(isbn);
         bookMessage.setStatus(BookStatusEnum.WINNING.getCode());
         bookMessageService.save(bookMessage);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
     }
 
-    private void updateStatus(String mobookId){
-        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+    private void updateStatus(String isbn){
+        BookMessage bookMessage = bookMessageService.findOne(isbn);
         bookMessage.setStatus(BookStatusEnum.UP.getCode());
         bookMessageService.save(bookMessage);
     }
 
 
     @GetMapping("/no_newbook")
-    public ModelAndView noNewbook(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        updateStatus(mobookId);
+    public ModelAndView noNewbook(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        updateStatus(isbn);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_NBLIST);
     }
 
     @GetMapping("/no_hotssearch")
-    public ModelAndView noHotsSearch(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        updateStatus(mobookId);
+    public ModelAndView noHotsSearch(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        updateStatus(isbn);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.HOTS_SEARCH_LIST);
     }
 
     @GetMapping("/no_zbbook")
-    public ModelAndView noZbbook(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        updateStatus(mobookId);
+    public ModelAndView noZbbook(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        updateStatus(isbn);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_ZBLIST);
     }
 
     @GetMapping("/no_wbook")
-    public ModelAndView noWbook(@RequestParam(value = "mobookId",defaultValue = "") String mobookId){
-        updateStatus(mobookId);
+    public ModelAndView noWbook(@RequestParam(value = "isbn",defaultValue = "") String isbn){
+        updateStatus(isbn);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
     }

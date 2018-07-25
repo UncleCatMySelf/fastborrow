@@ -20,9 +20,9 @@
                 <div class="col-md-12 column">
                     <form role="form" class="form-horizontal" action="/fastborrow/admin/bookmessage/hots_search">
                         <div class="form-group">
-                            <label for="mobookId" class="col-sm-1 control-label">图书编号</label>
+                            <label for="isbn" class="col-sm-1 control-label">图书编号</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="mobookId" name="mobookId" value="${sMobookId!''}" />
+                                <input type="text" class="form-control" id="isbn" name="isbn" value="${sIsbn!''}" />
                             </div>
                             <label for="bookName" class="col-sm-1 control-label">图书名称</label>
                             <div class="col-sm-4">
@@ -36,9 +36,8 @@
                     <table class="table table-hover table-striped">
                         <thead>
                         <tr>
-                            <th>墨书Id</th>
-                            <th>书名</th>
                             <th>ISBN</th>
+                            <th>书名</th>
                             <th>价格</th>
                             <th>分类</th>
                             <th>位置</th>
@@ -49,9 +48,8 @@
                         <tbody>
                         <#list bookMessagePage.content as bookMessage>
                         <tr>
-                            <td>${bookMessage.mobookId!''}</td>
-                            <td>${bookMessage.bookName!''}</td>
                             <td>${bookMessage.isbn!''}</td>
+                            <td>${bookMessage.bookName!''}</td>
                             <td>${bookMessage.price!''}</td>
                             <#list tagList as tag>
                                 <#if (bookMessage.tagNum)?? && bookMessage.tagNum == tag.tagNum>
@@ -65,7 +63,7 @@
                             </#list>
                             <td>${bookMessage.pressTime!''}</td>
                             <td>
-                                <a href="/fastborrow/admin/bookmessage/hots_add?mobookId=${bookMessage.mobookId}">设为热门搜索</a>
+                                <a href="/fastborrow/admin/bookmessage/hots_add?isbn=${bookMessage.isbn}">设为热门搜索</a>
                             </td>
                         </tr>
                         </#list>
@@ -78,20 +76,20 @@
                 <#if currentPage lte 1>
                     <li class="disabled"><a href="#">上一页</a></li>
                 <#else>
-                    <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${currentPage - 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">上一页</a></li>
+                    <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${currentPage - 1}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">上一页</a></li>
                 </#if>
 
                 <#list 1..bookMessagePage.getTotalPages() as index>
                     <#if currentPage == index>
                         <li class="disabled"><a href="#">${index}</a></li>
                     <#else>
-                        <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${index}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">${index}</a></li>
+                        <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${index}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">${index}</a></li>
                     </#if>
                 </#list>
                 <#if currentPage gte bookMessagePage.getTotalPages()>
                     <li class="disabled"><a href="#">下一页</a></li>
                 <#else>
-                    <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${currentPage + 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">下一页</a></li>
+                    <li><a href="/fastborrow/admin/bookmessage/hots_search?page=${currentPage + 1}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">下一页</a></li>
                 </#if>
                 </ul>
             </div>

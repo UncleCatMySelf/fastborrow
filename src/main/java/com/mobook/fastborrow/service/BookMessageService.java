@@ -20,9 +20,11 @@ public interface BookMessageService {
 
     Page<BookMessage> findAll(Pageable pageable);
 
-    BookMessage findOne(String mobookId);
+    BookMessage findOne(String isbn);
 
-    List<BookMessage> findByWhereTag(String whereTag);
+    Integer countByIsbn(String isbn);
+
+//    List<BookMessage> findByWhereTag(String whereTag);
 
     List<BookMessage> findByTagNum(Integer tagNum);
 
@@ -32,38 +34,37 @@ public interface BookMessageService {
 
     Page<BookMessage> findByStatusIsNotAndRecNumIs(Integer status,Pageable pageable);
 
-    Page<BookMessage> findByMobookIdAndBookName(String mobookId, String bookName, PageRequest request);
+    Page<BookMessage> findByIsbnAndBookName(String isbn, String bookName, PageRequest request);
 
     Page<BookMessage> findByBookName(String bookName, PageRequest request);
 
-    Page<BookMessage> findByMobookId(String mobookId, PageRequest request);
+    Page<BookMessage> findByIsbn(String isbn, PageRequest request);
 
-    Page<BookMessage> findByMobookIdIsLikeAndStatus(String mobookId,Integer status ,Pageable pageable);
+    Page<BookMessage> findByIsbnIsLikeAndStatus(String isbn,Integer status ,Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndStatusIsNot(String mobookId,Integer status , Pageable pageable);
+    Page<BookMessage> findByIsbnIsLikeAndStatusIsNot(String isbn,Integer status , Pageable pageable);
 
     Page<BookMessage> findByBookNameIsLikeAndStatus(String bookName,Integer status , Pageable pageable);
 
     Page<BookMessage> findByBookNameIsLikeAndStatusIsNot(String bookName,Integer status , Pageable pageable);
 
-    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatus(String mobookId,
+    Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatus(String isbn,
                                                                      String bookName,
                                                                      Integer status,
                                                                      Pageable pageable);
-    Page<BookMessage> findByMobookIdIsLikeAndBookNameIsLikeAndStatusIsNot(String mobookId,
+    Page<BookMessage> findByIsbnIsLikeAndBookNameIsLikeAndStatusIsNot(String isbn,
                                                                           String bookName,
                                                                           Integer status,
                                                                           Pageable pageable);
 
     Page<BookMessage> findByStatus(Integer status,Pageable pageable);
 
-    List<BookMessage> findByIsbn(String isbn);
 
     List<BookMessage> findByStatus(Integer status);
 
-    BookMessage onSale(String mobookId);
+    BookMessage onSale(String isbn);
 
-    BookMessage offSale(String mobookId);
+    BookMessage offSale(String isbn);
 
     List<BookMessage> findByBookNameIsLikeAndStatusIsNot( String bookName,
                                                          Integer status);

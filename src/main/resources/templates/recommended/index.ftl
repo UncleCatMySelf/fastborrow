@@ -60,9 +60,9 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="mobookId" class="col-sm-1 control-label">图书编号</label>
+                            <label for="isbn" class="col-sm-1 control-label">ISBN</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="mobookId" name="mobookId" value="${sMobookId!''}" />
+                                <input type="text" class="form-control" id="isbn" name="isbn" value="${sIsbn!''}" />
                             </div>
                             <label for="bookName" class="col-sm-1 control-label">图书名称</label>
                             <div class="col-sm-4">
@@ -74,9 +74,8 @@
                             <table class="table table-hover table-striped">
                                 <thead>
                                 <tr>
-                                    <th>墨书Id</th>
-                                    <th>书名</th>
                                     <th>ISBN</th>
+                                    <th>书名</th>
                                     <th>价格</th>
                                     <th>分类</th>
                                     <th>操作</th>
@@ -85,14 +84,13 @@
                                 <tbody>
                                 <#list bookMessagePage.content as bookMessage>
                                 <tr>
-                                    <td>${bookMessage.mobookId}</td>
-                                    <td>${bookMessage.bookName}</td>
                                     <td>${bookMessage.isbn}</td>
+                                    <td>${bookMessage.bookName}</td>
                                     <td>${bookMessage.price}</td>
                                     <td>${bookMessage.pressTime}</td>
                                     <td>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" value="${bookMessage.mobookId}" name="bookmess" />添加</label>
+                                            <label><input type="checkbox" value="${bookMessage.isbn}" name="bookmess" />添加</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -105,20 +103,20 @@
                             <#if currentPage lte 1>
                                 <li class="disabled"><a href="#">上一页</a></li>
                             <#else>
-                                <li><a href="/fastborrow/admin/recommended/index?page=${currentPage - 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">上一页</a></li>
+                                <li><a href="/fastborrow/admin/recommended/index?page=${currentPage - 1}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">上一页</a></li>
                             </#if>
 
                             <#list 1..bookMessagePage.getTotalPages() as index>
                                 <#if currentPage == index>
                                     <li class="disabled"><a href="#">${index}</a></li>
                                 <#else>
-                                    <li><a href="/fastborrow/admin/recommended/index?page=${index}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">${index}</a></li>
+                                    <li><a href="/fastborrow/admin/recommended/index?page=${index}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">${index}</a></li>
                                 </#if>
                             </#list>
                             <#if currentPage gte bookMessagePage.getTotalPages()>
                                 <li class="disabled"><a href="#">下一页</a></li>
                             <#else>
-                                <li><a href="/fastborrow/admin/recommended/index?page=${currentPage + 1}&size=${size}&mobookId=${sMobookId}&bookName=${sBookName}">下一页</a></li>
+                                <li><a href="/fastborrow/admin/recommended/index?page=${currentPage + 1}&size=${size}&isbn=${sIsbn}&bookName=${sBookName}">下一页</a></li>
                             </#if>
                             </ul>
                         </div>

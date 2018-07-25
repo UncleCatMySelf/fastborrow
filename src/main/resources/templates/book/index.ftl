@@ -33,20 +33,6 @@
                             <input name="price" type="text" class="form-control" value="${(bookMessage.price)!''}"/>
                         </div>
                         <div class="form-group">
-                            <label>位置</label>
-                            <select name="whereTag" id="" class="form-control">
-                            <#list bookWhereList as bookWhere>
-                                <option value="${bookWhere.whereTag}"
-                                    <#if (bookMessage.whereTag)?? &&  bookMessage.whereTag ==   bookWhere.whereTag>
-                                        selected
-                                    </#if>
-                                >
-                                ${bookWhere.whereName}
-                                </option>
-                            </#list>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>作者</label>
                             <input name="author" type="text" class="form-control" value="${(bookMessage.author)!''}"/>
                         </div>
@@ -81,9 +67,14 @@
                             </textarea>
                         </div>
                         <div class="form-group">
-                            <label>封面</label>
+                            <label>封面1</label>
                             <img width="100" height="100" src="${(bookMessage.images)!''}">
                             <input name="images" type="text" class="form-control" value="${(bookMessage.images)!''}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>封面2</label>
+                            <img width="100" height="100" src="${(bookMessage.images2)!''}">
+                            <input name="images2" type="text" class="form-control" value="${(bookMessage.images2)!''}"/>
                         </div>
                         <div class="form-group">
                             <label>介绍长图</label>
@@ -108,7 +99,6 @@
                             </#list>
                             </select>
                         </div>
-                        <input hidden type="text" name="mobookId" value="${(bookMessage.mobookId)!''}">
                         <button type="submit" class="btn btn-default">提交</button>
                     </form>
                 </div>

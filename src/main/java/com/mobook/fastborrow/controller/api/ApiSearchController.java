@@ -126,7 +126,7 @@ public class ApiSearchController {
         isbns.clear();
         isbns.addAll(h);
         for (String isbnItem:isbns){
-            items.add(bookMessageService.findByIsbn(isbnItem).get(0));
+            items.add(bookMessageService.findOne(isbnItem));
         }
         return items;
     }

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 
 /**
  * @Author:UncleCatMySelf
@@ -20,11 +22,7 @@ public interface InventoryService {
 
     Inventory findOne(Integer id);
 
-    Inventory findByIsbn(String isbn);
+    List<Inventory> findByIsbn(String isbn);
 
-    Page<Inventory> findByIsbnISLikeAndBookNameISLike(String isbn, String bookName, PageRequest request);
-
-    Page<Inventory> findByBookNameISLike(String bookName, PageRequest request);
-
-    Page<Inventory> findByIsbnISLike(String isbn, PageRequest request);
+    List<Inventory> findByWhereTag(String whereTag);
 }

@@ -20,9 +20,8 @@
                             <table class="table table-hover table-striped">
                                 <thead>
                                 <tr>
-                                    <th>墨书Id</th>
-                                    <th>书名</th>
                                     <th>ISBN</th>
+                                    <th>书名</th>
                                     <th>价格</th>
                                     <th>分类</th>
                                     <th>出版日期</th>
@@ -32,9 +31,8 @@
                                 <tbody>
                                 <#list bookMessageList as bookMessage>
                                 <tr>
-                                    <td>${bookMessage.mobookId}</td>
-                                    <td>${bookMessage.bookName}</td>
                                     <td>${bookMessage.isbn}</td>
+                                    <td>${bookMessage.bookName}</td>
                                     <td>${bookMessage.price}</td>
                                     <#list tagList as tag>
                                         <#if (bookMessage.tagNum)?? && bookMessage.tagNum == tag.tagNum>
@@ -43,7 +41,7 @@
                                     </#list>
                                     <td>${bookMessage.pressTime}</td>
                                     <td>
-                                        <a href="/fastborrow/admin/bookmessage/no_zbbook?mobookId=${bookMessage.mobookId}">撤销推荐</a>
+                                        <a href="/fastborrow/admin/bookmessage/no_zbbook?isbn=${bookMessage.isbn}">撤销推荐</a>
                                     </td>
                                 </tr>
                                 </#list>

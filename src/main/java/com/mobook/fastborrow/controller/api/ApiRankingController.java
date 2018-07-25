@@ -55,12 +55,13 @@ public class ApiRankingController {
     }
 
     public Integer just2InventoryState(BookMessage bookMessage){
-        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
-        if (inventory.getStatusNum() > 0){
-            return InventoryStatusEnum.YES.getCode();
-        }else{
-            return InventoryStatusEnum.NO.getCode();
-        }
+//        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
+//        if (inventory.getStatusNum() > 0){
+//            return InventoryStatusEnum.YES.getCode();
+//        }else{
+//            return InventoryStatusEnum.NO.getCode();
+//        }
+        return null;
     }
 
 }

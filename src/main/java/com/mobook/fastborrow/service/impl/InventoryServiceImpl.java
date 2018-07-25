@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * @Author:UncleCatMySelf
@@ -38,24 +40,14 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public Inventory findByIsbn(String isbn) {
+    public List<Inventory> findByIsbn(String isbn) {
         return repository.findByIsbn(isbn);
     }
 
     @Override
-    public Page<Inventory> findByIsbnISLikeAndBookNameISLike(String isbn, String bookName, PageRequest request) {
-        return repository.findByIsbnIsLikeAndBookNameIsLike("%"+isbn+"%",
-                "%"+bookName+"%",request);
+    public List<Inventory> findByWhereTag(String whereTag) {
+        return repository.findByWhereTag(whereTag);
     }
 
-    @Override
-    public Page<Inventory> findByBookNameISLike(String bookName, PageRequest request) {
-        return repository.findByBookNameIsLike("%"+bookName+"%",request);
-    }
-
-    @Override
-    public Page<Inventory> findByIsbnISLike(String isbn, PageRequest request) {
-        return repository.findByIsbnIsLike("%"+isbn+"%",request);
-    }
 
 }
