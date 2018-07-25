@@ -13,7 +13,7 @@ import lombok.Data;
 public class RecomBookVO {
 
     @JsonProperty("bookId")
-    private String mobookId;
+    private String isbn;
 
     private String bookName;
 

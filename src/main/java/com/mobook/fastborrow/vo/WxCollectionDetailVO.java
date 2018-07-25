@@ -14,14 +14,11 @@ import java.math.BigDecimal;
 @Data
 public class WxCollectionDetailVO {
 
-    @JsonProperty("bookId")
-    private String mobookId;
+    @JsonProperty("id")
+    private String isbn;
     /**书名*/
     @JsonProperty("name")
     private String bookName;
-
-    /**ISBN*/
-    private String isbn;
 
     /**价格*/
     private BigDecimal price;

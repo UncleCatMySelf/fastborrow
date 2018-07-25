@@ -5,6 +5,7 @@ import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.Inventory;
 import com.mobook.fastborrow.enums.BookStatusEnum;
 import com.mobook.fastborrow.enums.InventoryStatusEnum;
+import com.mobook.fastborrow.enums.InventoryVOStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.InventoryService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
@@ -55,13 +56,14 @@ public class ApiRankingController {
     }
 
     public Integer just2InventoryState(BookMessage bookMessage){
-//        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
-//        if (inventory.getStatusNum() > 0){
-//            return InventoryStatusEnum.YES.getCode();
-//        }else{
-//            return InventoryStatusEnum.NO.getCode();
-//        }
-        return null;
+        List<Inventory> inventoryList = inventoryService.findByIsbn(bookMessage.getIsbn());
+        int num = InventoryVOStatusEnum.NO.getCode();
+        for (Inventory item:inventoryList){
+            if (item.getStatus() == InventoryStatusEnum.IN.getCode()){
+                num = InventoryVOStatusEnum.Yes.getCode();
+            }
+        }
+        return num;
     }
 
 }

@@ -5,6 +5,7 @@ import com.mobook.fastborrow.dataobject.BookMessage;
 import com.mobook.fastborrow.dataobject.Inventory;
 import com.mobook.fastborrow.enums.BookStatusEnum;
 import com.mobook.fastborrow.enums.InventoryStatusEnum;
+import com.mobook.fastborrow.enums.InventoryVOStatusEnum;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.InventoryService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
@@ -64,17 +65,16 @@ public class ApiBookMessageController {
     }
 
     @GetMapping("/bookDetail")
-    public ResultVO<BookDetailVO> getBookDetail(@RequestParam("mobookId") String mobookId){
-        BookMessage bookMessage = bookMessageService.findOne(mobookId);
+    public ResultVO<BookDetailVO> getBookDetail(@RequestParam("isbn") String isbn){
+        BookMessage bookMessage = bookMessageService.findOne(isbn);
         BookDetailVO bookDetailVO = BookMessage2BookDetailVoConverter.convert(bookMessage);
-//        Inventory inventory = inventoryService.findByIsbn(bookMessage.getIsbn());
-//        if (inventory.getStatusNum() > 0){
-//            //有货
-//            bookDetailVO.setInventoryState(InventoryStatusEnum.YES.getCode());
-//        }else{
-//            //无货
-//            bookDetailVO.setInventoryState(InventoryStatusEnum.NO.getCode());
-//        }
+        List<Inventory> inventoryList = inventoryService.findByIsbn(bookMessage.getIsbn());
+        bookDetailVO.setInventoryState(InventoryVOStatusEnum.NO.getCode());
+        for (Inventory item:inventoryList){
+            if (item.getStatus() == InventoryStatusEnum.IN.getCode()){
+                bookDetailVO.setInventoryState(InventoryVOStatusEnum.Yes.getCode());
+            }
+        }
         return ResultVOUtil.success(bookDetailVO);
     }
 

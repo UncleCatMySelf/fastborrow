@@ -13,7 +13,7 @@ import lombok.Data;
 public class HotsSearchVO {
 
     @JsonProperty("id")
-    private String mobookId;
+    private String isbn;
 
     @JsonProperty("name")
     private String bookName;

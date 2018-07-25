@@ -56,7 +56,6 @@ public class ApiSearchController {
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
         }
         List<BookMessage> bookMessageList1 = bookMessageService.findByBookNameIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
-//        List<BookMessage> bookMessageList2 = bookMessageService.findByInfoIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
         List<BookMessage> bookMessageList3 = bookMessageService.findByAuthorIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
         List<BookMessage> resultList = race(bookMessageList1,null,bookMessageList3);
         //用户是否登录状态分类
@@ -111,16 +110,9 @@ public class ApiSearchController {
     private List<BookMessage> race(List<BookMessage> bookMessageList1,List<BookMessage> bookMessageList2,List<BookMessage> bookMessageList3) {
         List<BookMessage> items = new ArrayList<BookMessage>();
         List<String> isbns = new ArrayList<String>();
-        String isbn = "";
-//        bookMessageList1.addAll(bookMessageList2);
         bookMessageList1.addAll(bookMessageList3);
         for (BookMessage item:bookMessageList1){
-            if (item.getIsbn().equals(isbn)){
-                continue;
-            }else{
-                isbns.add(item.getIsbn());
-                isbn = item.getIsbn();
-            }
+            isbns.add(item.getIsbn());
         }
         HashSet h = new HashSet(isbns);
         isbns.clear();

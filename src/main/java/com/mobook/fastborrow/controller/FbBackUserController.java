@@ -121,8 +121,12 @@ public class FbBackUserController {
     }
 
     @GetMapping("/index")
-    public ModelAndView index(){
-        return new ModelAndView(MAVUriConstant.INDEX);
+    public ModelAndView index(Map<String, Object> map){
+        List<RedisSearchVO> redisSearchVOList =  getRedisSearch();
+        String listStr = toStringRedisSearch(redisSearchVOList);
+        map.put("redisSearchVOList",redisSearchVOList);
+        map.put("listStr",listStr);
+        return new ModelAndView(MAVUriConstant.INDEX,map);
     }
 
     @GetMapping("/login")

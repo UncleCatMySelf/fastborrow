@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Data
 public class SearchVO {
 
-    private String mobookId;
+    private String isbn;
 
     private String bookName;
 
