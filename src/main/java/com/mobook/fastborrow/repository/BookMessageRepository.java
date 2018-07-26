@@ -17,11 +17,7 @@ import java.util.List;
  */
 public interface BookMessageRepository extends JpaRepository<BookMessage, String> {
 
-    List<BookMessage> findByIsbn(String isbn);
-
     Integer countByIsbn(String isbn);
-
-    Page<BookMessage> findByIsbn(String isbn,Pageable pageable);
 
 //    List<BookMessage> findByWhereTag(String whereTag);
 

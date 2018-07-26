@@ -13,6 +13,7 @@ import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.BookWhereService;
 import com.mobook.fastborrow.service.InventoryService;
 import com.mobook.fastborrow.service.TagService;
+import com.mobook.fastborrow.service.elastic.ISearchService;
 import com.mobook.fastborrow.utils.KeyUtil;
 import com.mobook.fastborrow.utils.MAVUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +48,7 @@ public class FbBookMessageController {
     private BookMessageService bookMessageService;
 
     @Autowired
-    private BookWhereService bookWhereService;
+    private ISearchService searchService;
 
     @Autowired
     private TagService tagService;
@@ -340,5 +341,15 @@ public class FbBookMessageController {
         updateStatus(isbn);
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
+    }
+
+    @GetMapping("/remove")
+    public void remove(){
+        searchService.remove("2345234");
+    }
+
+    @GetMapping("/send")
+    public void send(){
+        searchService.index("2345234");
     }
 }

@@ -9,7 +9,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableCaching //缓存
 @EnableSwagger2 //Swagger自动生成文档
 public class FastborrowApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(FastborrowApplication.class, args);
 	}
