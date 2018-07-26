@@ -33,6 +33,14 @@
                             <input name="price" type="text" class="form-control" value="${(bookMessage.price)!''}"/>
                         </div>
                         <div class="form-group">
+                            <label>阅读人数</label>
+                            <input name="num" type="number" class="form-control" value="${(bookMessage.num)!''}"/>
+                        </div>
+                        <div class="form-group">
+                            <label>评分</label>
+                            <input name="score" type="number" class="form-control" value="${(bookMessage.score)!''}"/>
+                        </div>
+                        <div class="form-group">
                             <label>作者</label>
                             <input name="author" type="text" class="form-control" value="${(bookMessage.author)!''}"/>
                         </div>

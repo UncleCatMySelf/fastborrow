@@ -343,13 +343,13 @@ public class FbBookMessageController {
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
     }
 
-    @GetMapping("/remove")
-    public void remove(){
-        searchService.remove("2345234");
-    }
-
-    @GetMapping("/send")
-    public void send(){
-        searchService.index("2345234");
-    }
+//    @GetMapping("/remove")
+//    public void remove(){
+//        searchService.remove("2345234");
+//    }
+//
+//    @GetMapping("/send")
+//    public void send(){
+//        searchService.index("2345234");
+//    }
 }

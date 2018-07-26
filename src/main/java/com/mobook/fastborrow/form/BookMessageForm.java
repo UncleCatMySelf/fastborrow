@@ -28,9 +28,6 @@ public class BookMessageForm {
     @Digits(integer = 3,fraction = 2)
     private BigDecimal price;
 
-    /**位置*/
-    private String whereTag;
-
     /**作者*/
     @NotEmpty(message = "作者不能为空")
     private String author;
@@ -71,6 +68,10 @@ public class BookMessageForm {
     @NotEmpty(message = "标签不能为空")
     private String lable;
 
+    private Double score = 10.00;
+
+    /**借阅人数*/
+    private Integer num = 0;
 
     private String imageContext;
 
