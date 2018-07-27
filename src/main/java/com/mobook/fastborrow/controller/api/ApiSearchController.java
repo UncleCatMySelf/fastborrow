@@ -9,6 +9,7 @@ import com.mobook.fastborrow.enums.BookStatusEnum;
 import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.service.BookMessageService;
 import com.mobook.fastborrow.service.UserService;
+import com.mobook.fastborrow.service.elastic.ISearchService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.ResultVO;
 import com.mobook.fastborrow.vo.SearchVO;
@@ -48,17 +49,39 @@ public class ApiSearchController {
     private RedisTemplate redisTemplate;
     @Autowired
     private BookMessageService bookMessageService;
+    @Autowired
+    private ISearchService searchService;
 
-    @PostMapping("/send")
-    public ResultVO send(@RequestHeader("token") String token,@RequestParam("msg") String msg){
+    /**
+     * 自动补全接口
+     * @return
+     */
+    @GetMapping("/autofull")
+    public ResultVO searchFull(@RequestParam(value = "prefix") String prefix){
+        if (prefix.isEmpty()){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //可以模拟输出一定的数据
+        return searchService.suggest(prefix);
+    }
+
+    /**
+     * 基于ES的搜索引擎接口
+     */
+    @PostMapping("/essend")
+    public ResultVO essend(@RequestHeader("token") String token,@RequestParam("msg") String msg,
+                           @RequestParam("start") Integer start,
+                           @RequestParam("size") Integer size){
         //检查参数
         if (StringUtils.isEmpty(msg)){
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
         }
-        List<BookMessage> bookMessageList1 = bookMessageService.findByBookNameIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
-        List<BookMessage> bookMessageList3 = bookMessageService.findByAuthorIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
-        List<BookMessage> resultList = race(bookMessageList1,null,bookMessageList3);
-        //用户是否登录状态分类
+        redisMsg(token, msg);
+        echartsRedisSearch(msg);
+        return searchService.query(msg,start,size);
+    }
+
+    private void redisMsg(@RequestHeader("token") String token, @RequestParam("msg") String msg) {
         if (StringUtils.isEmpty(token)){
             //用户未登录---直接查询
         }else{
@@ -87,6 +110,25 @@ public class ApiSearchController {
                 }
             }
         }
+    }
+
+    /**
+     * 基于MYSQL的搜索
+     * @param token
+     * @param msg
+     * @return
+     */
+    @PostMapping("/send")
+    public ResultVO send(@RequestHeader("token") String token,@RequestParam("msg") String msg){
+        //检查参数
+        if (StringUtils.isEmpty(msg)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        List<BookMessage> bookMessageList1 = bookMessageService.findByBookNameIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
+        List<BookMessage> bookMessageList3 = bookMessageService.findByAuthorIsLikeAndStatusIsNot(msg, BookStatusEnum.DOWN.getCode());
+        List<BookMessage> resultList = race(bookMessageList1,null,bookMessageList3);
+        //用户是否登录状态分类
+        redisMsg(token, msg);
         echartsRedisSearch(msg);
         List<SearchVO> searchVOList = BookMessage2SearchVOConverter.convert(resultList);
         return ResultVOUtil.success(searchVOList);
@@ -122,7 +164,6 @@ public class ApiSearchController {
         }
         return items;
     }
-
 
     private void saveToRedis(Integer userId,String msg) {
         Integer expire = RedisConstant.WX_USER_EXPIRE;

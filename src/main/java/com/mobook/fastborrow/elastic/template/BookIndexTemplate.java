@@ -2,6 +2,8 @@ package com.mobook.fastborrow.elastic.template;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * 索引结构模板
  * @Author:UncleCatMySelf
@@ -18,9 +20,14 @@ public class BookIndexTemplate {
 
     private String author;
 
+    //不在复制范围
+    private String tag;
+
+    private String lable;
+
     private Integer num;
 
-    private Integer tagNum;
+    //type:completion
+    private List<BookSuggest> suggests;
 
-    //标签
 }

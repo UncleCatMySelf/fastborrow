@@ -1,5 +1,7 @@
 package com.mobook.fastborrow.service.elastic;
 
+import com.mobook.fastborrow.vo.ResultVO;
+
 /**
  * 检索接口
  * @Author:UncleCatMySelf
@@ -20,5 +22,17 @@ public interface ISearchService {
      * @param isbn
      */
     void remove(String isbn);
+
+    /**
+     * 搜索图书接口
+     * @param msg
+     * @return
+     */
+    ResultVO query(String msg,int start,int size);
+
+    /**
+     * 获取补全建议关键词
+     */
+    ResultVO suggest(String prefix);
 
 }

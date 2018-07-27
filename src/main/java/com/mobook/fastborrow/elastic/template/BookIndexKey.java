@@ -17,6 +17,8 @@ public class BookIndexKey {
 
     public static final String NUM = "num";
 
-    public static final String TAGNUM = "tagNum";
+    public static final String TAG = "tag";
+
+    public static final String LABLE = "lable";
 
 }

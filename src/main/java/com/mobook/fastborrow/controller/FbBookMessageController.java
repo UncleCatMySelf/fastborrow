@@ -53,24 +53,6 @@ public class FbBookMessageController {
     @Autowired
     private TagService tagService;
 
-    @Autowired
-    private InventoryService inventoryService;
-
-    //@GetMapping("/list")
-    public ModelAndView list(@RequestParam(value = "page",defaultValue = "1") Integer page,
-                             @RequestParam(value = "size",defaultValue = "10") Integer size,
-                             Map<String, Object> map){
-        PageRequest request = new PageRequest(page - 1,size);
-        Page<BookMessage> bookMessagePage = bookMessageService.findAll(request);
-        //查询所有分类
-        List<Tag> tagList = tagService.findAll();
-        map.put("tagList",tagList);
-        map.put("bookMessagePage",bookMessagePage);
-        map.put("currentPage", page);
-        map.put("size", size);
-        return new ModelAndView(MAVUriConstant.BOOK_LITS,map);
-    }
-
     /**
      * 查询存在分页bug
      * @param page
@@ -128,28 +110,13 @@ public class FbBookMessageController {
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
         }
         BookMessage bookMessage = new BookMessage();
-        Inventory inventory = new Inventory();
         try {
-            // id空则新增
-            if (bookMessageService.countByIsbn(form.getIsbn()) > 0){
-                return MAVUtils.setResultMOV(MAVUriConstant.ERROR,"此书已存在,请针对ISBN进行修改",
-                                URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
-            }
-//            //else{
-//                //墨书id生成
-////                String keyId = KeyUtil.getMobookKey(form.getTagNum());
-////                form.setMobookId(keyId);
-////                inventory.setNum(1);
-////                inventory.setStatusNum(1);
-////                inventory.setBookName(form.getBookName());
-////                inventory.setIsbn(form.getIsbn());
-//            //}
             BeanUtils.copyProperties(form,bookMessage);
             bookMessage.setInfo(bookMessage.getInfo().trim());
             bookMessage.setSummary(bookMessage.getSummary().trim());
             bookMessage.setCatalog(bookMessage.getCatalog().trim());
             bookMessageService.save(bookMessage);
-            inventoryService.save(inventory);
+            searchService.index(bookMessage.getIsbn());
         } catch (FastBorrowException e){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_INDEX);
@@ -162,6 +129,7 @@ public class FbBookMessageController {
     public ModelAndView onSale(@RequestParam("isbn") String isbn){
         try {
             bookMessageService.onSale(isbn);
+            searchService.index(isbn);
         }catch (FastBorrowException e){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
@@ -174,6 +142,7 @@ public class FbBookMessageController {
     public ModelAndView offSale(@RequestParam("isbn") String isbn){
         try {
             bookMessageService.offSale(isbn);
+            searchService.remove(isbn);
         }catch (FastBorrowException e){
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.BOOKMESSAGE_LIST);
@@ -342,14 +311,4 @@ public class FbBookMessageController {
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.BOOKMESSAGE_WLIST);
     }
-
-//    @GetMapping("/remove")
-//    public void remove(){
-//        searchService.remove("2345234");
-//    }
-//
-//    @GetMapping("/send")
-//    public void send(){
-//        searchService.index("2345234");
-//    }
 }

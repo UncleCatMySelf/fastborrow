@@ -12,10 +12,7 @@ import com.mobook.fastborrow.form.WxLogisticsForm;
 import com.mobook.fastborrow.service.*;
 import com.mobook.fastborrow.utils.MAVUtils;
 import com.mobook.fastborrow.utils.ResultVOUtil;
-import com.mobook.fastborrow.vo.ResultVO;
-import com.mobook.fastborrow.vo.WxCollectionDetailVO;
-import com.mobook.fastborrow.vo.WxLibraryDetailVO;
-import com.mobook.fastborrow.vo.WxLogisticsVO;
+import com.mobook.fastborrow.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +48,31 @@ public class ApiWXUserController {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private LogisticsService logisticsService;
+    @Autowired
+    private OrderMasterService orderMasterService;
+
+    @GetMapping("/user_home")
+    public ResultVO userHome(@RequestHeader("token") String token){
+        //检查参数
+        if (StringUtils.isEmpty(token)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        WxUserLoginVO wxUserLoginVO = new WxUserLoginVO();
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        BeanUtils.copyProperties(user,wxUserLoginVO);
+        OrderMaster orderMaster = orderMasterService.findByBuyerOpenid(user.getOpenId());
+        if (orderMaster == null){
+            wxUserLoginVO.setStatus(0);
+        }else{
+            wxUserLoginVO.setStatus(orderMaster.getOrderStatus());
+        }
+        return ResultVOUtil.success(wxUserLoginVO);
+    }
+
+
+
 
     @PostMapping("/add_one_collection")
     public ResultVO addCollection(@RequestHeader("token") String token
@@ -351,7 +373,6 @@ public class ApiWXUserController {
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
         }
     }
-
 
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();

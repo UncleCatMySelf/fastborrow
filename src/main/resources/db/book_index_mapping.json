@@ -3,20 +3,34 @@
     "book":{
       "dynamic":false,
       "properties":{
-        "name":{
-          "type":"text"
+        "bookName":{
+          "type":"text",
+          "analyzer":"ik_max_word",
+          "search_analyzer":"ik_max_word"
         },
         "isbn":{
           "type":"text"
         },
         "author":{
-          "type":"text"
+          "type":"text",
+          "analyzer":"ik_max_word",
+          "search_analyzer":"ik_max_word"
         },
         "num":{
           "type":"integer"
         },
-        "tag_num":{
-          "type":"integer"
+        "tag":{
+          "type":"text",
+          "analyzer":"ik_max_word",
+          "search_analyzer":"ik_max_word"
+        },
+        "lable":{
+          "type":"text",
+          "analyzer":"ik_max_word",
+          "search_analyzer":"ik_max_word"
+        },
+        "suggests":{
+          "type":"completion"
         }
       }
     }
