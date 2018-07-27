@@ -51,6 +51,21 @@ public class ApiWXUserController {
     @Autowired
     private OrderMasterService orderMasterService;
 
+    @GetMapping("/user_wallet")
+    public ResultVO userWallet(@RequestHeader("token") String token){
+        //检查参数
+        if (StringUtils.isEmpty(token)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        WxWalletVO wxWalletVO = new WxWalletVO();
+        BeanUtils.copyProperties(user,wxWalletVO);
+        return ResultVOUtil.success(wxWalletVO);
+    }
+
+
     @GetMapping("/user_home")
     public ResultVO userHome(@RequestHeader("token") String token){
         //检查参数
@@ -70,9 +85,6 @@ public class ApiWXUserController {
         }
         return ResultVOUtil.success(wxUserLoginVO);
     }
-
-
-
 
     @PostMapping("/add_one_collection")
     public ResultVO addCollection(@RequestHeader("token") String token

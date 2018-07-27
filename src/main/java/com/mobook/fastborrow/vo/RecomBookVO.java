@@ -20,7 +20,7 @@ public class RecomBookVO {
     @JsonProperty("bookAuthor")
     private String author;
 
-    private String summary;
+    private String info;
 
     @JsonProperty("url")
     private String images;
