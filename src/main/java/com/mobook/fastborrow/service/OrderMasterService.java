@@ -1,6 +1,7 @@
 package com.mobook.fastborrow.service;
 
 import com.mobook.fastborrow.dataobject.OrderMaster;
+import com.mobook.fastborrow.dto.OrderDTO;
 
 /**
  * @Author:UncleCatMySelf
@@ -12,4 +13,9 @@ public interface OrderMasterService {
 
     OrderMaster findByBuyerOpenid (String buyerOpenid);
 
+    OrderDTO findOne(String orderId);
+
+    OrderDTO paid(OrderDTO orderDTO);
+
+    OrderDTO createDeposit(String openId);
 }

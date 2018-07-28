@@ -71,4 +71,25 @@ public class OrderMaster implements Serializable {
     /**更新时间*/
     private Date updateTime;
 
+    public OrderMaster() {
+    }
+
+    public OrderMaster(String orderId, String expressNum, String buyerName, String buyerPhone, String buyerAddress, String buyerOpenid, BigDecimal orderDeposit, BigDecimal orderPayment, BigDecimal orderExpress, BigDecimal orderAmount, Integer orderNum, Integer orderTime, Integer orderStatus, Integer payStatus, Date createTime, Date updateTime) {
+        this.orderId = orderId;
+        this.expressNum = expressNum;
+        this.buyerName = buyerName;
+        this.buyerPhone = buyerPhone;
+        this.buyerAddress = buyerAddress;
+        this.buyerOpenid = buyerOpenid;
+        this.orderDeposit = orderDeposit;
+        this.orderPayment = orderPayment;
+        this.orderExpress = orderExpress;
+        this.orderAmount = orderAmount;
+        this.orderNum = orderNum;
+        this.orderTime = orderTime;
+        this.orderStatus = orderStatus;
+        this.payStatus = payStatus;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+    }
 }

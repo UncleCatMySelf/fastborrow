@@ -2,16 +2,36 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: root
-    url: jdbc:mysql://127.0.0.1/fastborrow?characterEncoding=utf-8&useSSL=false
+    password: Root2018!
+    url: jdbc:mysql://120.77.152.252:3306/fastborrow?characterEncoding=utf-8&useSSL=false
+  jpa:
+    show-sql: false
   jackson:
     default-property-inclusion: non_null
   redis:
-    host: 192.168.1.106
+    host: 120.77.152.252
     port: 6379
+  kafka:
+    bootstrap-servers: 120.77.152.252:9092
+    consumer:
+      group-id: mobook
 server:
   servlet:
     context-path: /fastborrow
+  port: 80
+  ssl:
+    key-store: classpath:www.mobook.xin.jks
+    key-store-password: mobook2017
+    key-password: mobook2017
 logging:
   level:
     com.myself.sbdiancan.dataobject.mapper: trace
+wechat:
+  mpAppId: wxd9b734ee92551b61
+  mpAppSecret: 0310ee9378316c3c8c742942656c8579
+  mchId: 1493261332
+  mchKey: mobook-2018
+  keyPath: /developer/pay/apiclient_cert.p12
+  notifyUrl: https://www.mobook.xin:80/fastborrow/api/v1/pay/notify
+  templateId:
+    orderStatus: xxx

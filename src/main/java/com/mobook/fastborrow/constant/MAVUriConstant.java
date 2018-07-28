@@ -77,4 +77,8 @@ public interface MAVUriConstant {
     String LIBRARY_SEARCH = "library/search";
 
     String RECEIVE_SEARCH = "receive/search";
+
+    String PAY_CREATE = "pay/create";
+
+    String PAY_SUCCESS = "pay/success";
 }

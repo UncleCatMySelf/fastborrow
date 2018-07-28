@@ -4,8 +4,6 @@ spring:
     username: root
     password: root
     url: jdbc:mysql://localhost:3306/fastborrow?characterEncoding=utf-8&useSSL=false
-#    password: Root2018!
-#    url: jdbc:mysql://120.77.152.252:3306/fastborrow?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
   jackson:
@@ -20,11 +18,15 @@ spring:
 server:
   servlet:
     context-path: /fastborrow
-#  port: 80
-#  ssl:
-#    key-store: classpath:www.mobook.xin.jks
-#    key-store-password: mobook2017
-#    key-password: mobook2017
 logging:
   level:
     com.myself.sbdiancan.dataobject.mapper: trace
+wechat:
+  mpAppId: wxd9b734ee92551b61
+  mpAppSecret: 0310ee9378316c3c8c742942656c8579
+  mchId: 1493261332
+  mchKey: mobook-2018
+  keyPath: F:\\公司\\支付证书\\apiclient_cert.p12
+  notifyUrl: http://www.myself.com/fastborrow/api/v1/pay/notify
+  templateId:
+    orderStatus: xxx
