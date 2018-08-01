@@ -22,4 +22,5 @@ public interface InventoryRepository extends JpaRepository<Inventory,Integer> {
 
     List<Inventory> findByWhereTag(String whereTag);
 
+    List<Inventory> findByIsbnAndStatus(String isbn,Integer status);
 }

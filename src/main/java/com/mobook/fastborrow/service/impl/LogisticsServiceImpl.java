@@ -57,4 +57,9 @@ public class LogisticsServiceImpl implements LogisticsService {
     public void deleteOne(Integer logId) {
         repository.deleteById(logId);
     }
+
+    @Override
+    public Logistics findByUserIdAndStatus(Integer userId, Integer status) {
+        return repository.findByUserIdAndStatus(userId,status);
+    }
 }

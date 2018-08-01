@@ -3,6 +3,7 @@ package com.mobook.fastborrow.service;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.model.RefundResponse;
 import com.mobook.fastborrow.dto.OrderDTO;
+import com.mobook.fastborrow.wechatpay.WxRefundResponse;
 import com.mobook.fastborrow.wechatpay.WxResponse;
 
 /**
@@ -17,6 +18,6 @@ public interface PayService {
 
     PayResponse notify(String notifyData);
 
-    RefundResponse refund(OrderDTO orderDTO);
+    WxRefundResponse refund(OrderDTO orderDTO);
 
 }

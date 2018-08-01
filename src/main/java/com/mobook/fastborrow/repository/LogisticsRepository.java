@@ -19,4 +19,5 @@ public interface LogisticsRepository extends JpaRepository<Logistics, Integer> {
 
     Page<Logistics> findByUserId(Integer userId, Pageable pageable);
 
+    Logistics findByUserIdAndStatus(Integer userId, Integer status);
 }

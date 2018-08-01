@@ -1,6 +1,8 @@
 package com.mobook.fastborrow.repository;
 
 import com.mobook.fastborrow.dataobject.OrderMaster;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -12,5 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OrderMasterRepository extends JpaRepository<OrderMaster,String> {
 
     OrderMaster findByBuyerOpenid (String buyerOpenid);
+
+    Page<OrderMaster> findByBuyerOpenidAndExpressNum(String buyerOpenid, String expressNum, Pageable pageable);
 
 }

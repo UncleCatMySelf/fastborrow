@@ -15,6 +15,7 @@ public enum OrderStatusEnum implements CodeEnum {
     PENDDELIVERY(2, "待收货"),
     PENDRETURN(3,"待归还"),
     COMPLETED(4,"已完成"),
+    NEW(5,"新订单"),
     ;
 
     private Integer code;

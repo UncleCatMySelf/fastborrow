@@ -32,6 +32,9 @@ public class OrderDetail implements Serializable {
     /**图书id*/
     private String mobookId;
 
+    /**isbn*/
+    private String isbn;
+
     /**图书名称*/
     private String mobookName;
 

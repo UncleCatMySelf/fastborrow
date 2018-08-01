@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import com.mobook.fastborrow.wechatpay.WXPayConstants.SignType;
 
@@ -53,14 +54,53 @@ public class WXPayUtil {
         data.put("openid",wxRequest.getOpenId());  //小程序支付需要openID
         resp = wxPay.unifiedOrder(data);
         result = WXSignUtil.sign(resp);
-        for (Map.Entry<String,String> entry:result.entrySet()){
-            System.out.println("key = "+entry.getKey()+",value = "+entry.getValue());
-        }
-
+//        for (Map.Entry<String,String> entry:result.entrySet()){
+//            System.out.println("key = "+entry.getKey()+",value = "+entry.getValue());
+//        }
         WxResponse wxResponse = map2Java(new WxResponse(),result);
         wxResponse.setPackAge(result.get("package"));
         return wxResponse;
     }
+
+    public WxRefundResponse refund(WXRefundRequest wxRefundRequest) throws Exception{
+        DecimalFormat df2 = new DecimalFormat("#");
+        MyConfig myConfig = new MyConfig();
+        WXPay wxPay = new WXPay(myConfig);
+        Map<String, String> resp = null;
+        Map<String, String> data = new HashMap<String, String>();
+        data.put("out_trade_no", wxRefundRequest.getOutTradeNo());
+        data.put("total_fee", df2.format(wxRefundRequest.getTotalFee().multiply(new BigDecimal(100))));
+        data.put("refund_fee",df2.format(wxRefundRequest.getRefundFee().multiply(new BigDecimal(100))));
+        data.put("notify_url", wxRefundRequest.getNotifyUrl());
+        data.put("refund_fee_type",wxRefundRequest.getRefundFeeType());
+        data.put("out_refund_no",wxRefundRequest.getOutRefundNo());
+        resp = wxPay.refund(data);
+//        for (Map.Entry<String,String> entry:resp.entrySet()){
+//            System.out.println("key = "+entry.getKey()+",value = "+entry.getValue());
+//        }
+        WxRefundResponse wxRefundResponse = map2Java(new WxRefundResponse(),resp);
+        return wxRefundResponse;
+    }
+
+    public static String getOrderIdByUUId() {
+        int machineId = 1;//最大支持1-9个集群机器部署
+        int hashCodeV = UUID.randomUUID().toString().hashCode();
+        if(hashCodeV < 0) {//有可能是负数
+            hashCodeV = - hashCodeV;
+        }
+        // 0 代表前面补充0
+        // 4 代表长度为4
+        // d 代表参数为正数型
+        return machineId + String.format("%015d", hashCodeV);
+    }
+
+    public static String getOnlyId(){
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date())+"";
+        String dates = getOrderIdByUUId();
+        dates = dates.substring(dates.length()-6,dates.length());
+        return date+dates;
+    }
+
 
     /**
      * Map对象转化成 JavaBean对象

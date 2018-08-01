@@ -28,4 +28,6 @@ public interface LogisticsService {
 
     void deleteOne(Integer logId);
 
+    Logistics findByUserIdAndStatus(Integer userId, Integer status);
+
 }

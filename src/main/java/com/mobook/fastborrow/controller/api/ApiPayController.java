@@ -1,10 +1,7 @@
 package com.mobook.fastborrow.controller.api;
 
-import com.lly835.bestpay.model.PayResponse;
-import com.mobook.fastborrow.constant.AppPay;
 import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.RedisConstant;
-import com.mobook.fastborrow.constant.WXLogMsgConstant;
 import com.mobook.fastborrow.dataobject.User;
 import com.mobook.fastborrow.dto.OrderDTO;
 import com.mobook.fastborrow.enums.ResultEnum;
@@ -14,17 +11,14 @@ import com.mobook.fastborrow.service.PayService;
 import com.mobook.fastborrow.service.UserService;
 import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.ResultVO;
-import com.mobook.fastborrow.vo.WxUserLoginVO;
+import com.mobook.fastborrow.wechatpay.WxRefundResponse;
 import com.mobook.fastborrow.wechatpay.WxResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
 
 /**
  * @Author:UncleCatMySelf
@@ -54,7 +48,6 @@ public class ApiPayController {
     public ResultVO create(@RequestHeader("token") String token,
                            @RequestParam("orderId") String orderId){
         //检查Token并获取token对应的用户id
-        WxUserLoginVO wxUserLoginVO = new WxUserLoginVO();
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
         User user = userService.findOne(Integer.parseInt(tokenValue));
         //1、查询订单
@@ -70,7 +63,6 @@ public class ApiPayController {
     @GetMapping("/deposit")
     public ResultVO deposit(@RequestHeader("token") String token){
         //检查Token并获取token对应的用户id
-        WxUserLoginVO wxUserLoginVO = new WxUserLoginVO();
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
         User user = userService.findOne(Integer.parseInt(tokenValue));
         OrderDTO orderDTO = orderMasterService.createDeposit(user.getOpenId());
@@ -78,6 +70,16 @@ public class ApiPayController {
         WxResponse wxResponse = payService.create(orderDTO);
 
         return ResultVOUtil.success(wxResponse);
+    }
+
+    @PostMapping("/refund")
+    public ResultVO refund(@RequestHeader("token") String token){
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        OrderDTO orderDTO = orderMasterService.findByBuyerOpenidToDeposit(user.getOpenId());
+        WxRefundResponse wxRefundResponse = payService.refund(orderDTO);
+        return ResultVOUtil.success(wxRefundResponse);
     }
 
     /**

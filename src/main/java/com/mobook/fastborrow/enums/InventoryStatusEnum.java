@@ -10,8 +10,8 @@ import lombok.Getter;
  */
 @Getter
 public enum InventoryStatusEnum implements CodeEnum {
-    IN(1,"有货"),
-    NO(2,"无货"),
+    IN(1,"在库"),
+    NO(2,"外借"),
     ;
     private Integer code;
 

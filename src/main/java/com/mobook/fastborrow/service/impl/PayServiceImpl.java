@@ -13,9 +13,7 @@ import com.mobook.fastborrow.service.OrderMasterService;
 import com.mobook.fastborrow.service.PayService;
 import com.mobook.fastborrow.utils.JsonUtil;
 import com.mobook.fastborrow.utils.MathUtil;
-import com.mobook.fastborrow.wechatpay.WXPayUtil;
-import com.mobook.fastborrow.wechatpay.WXRequest;
-import com.mobook.fastborrow.wechatpay.WxResponse;
+import com.mobook.fastborrow.wechatpay.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,9 +91,25 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
-    public RefundResponse refund(OrderDTO orderDTO) {
+    public WxRefundResponse refund(OrderDTO orderDTO) {
+        WxRefundResponse wxRefundResponse = new WxRefundResponse();
+        WXPayUtil wxPayUtil = new WXPayUtil();
+        WXRefundRequest wxRefundRequest = new WXRefundRequest();
+        wxRefundRequest.setOutTradeNo(orderDTO.getOrderId());
+        wxRefundRequest.setNotifyUrl(AppConstant.NOTIFY_URL);
+        wxRefundRequest.setRefundFee(orderDTO.getOrderPayment());
+        wxRefundRequest.setTotalFee(orderDTO.getOrderPayment());
+        wxRefundRequest.setOutRefundNo(WXPayUtil.getOnlyId());
+        wxRefundRequest.setRefundFeeType("CNY");
+        log.info("【微信退款】发起退款，request={}", JsonUtil.toJson(wxRefundRequest));
+        try {
+            wxRefundResponse = wxPayUtil.refund(wxRefundRequest);
+        } catch (Exception e) {
+            throw new FastBorrowException(ResultEnum.WXPAY_NOTIFY_MONEY_VERIFY_ERROR);
+        }
+        log.info("【微信退款】发起退款，response={}", JsonUtil.toJson(wxRefundResponse));
 
-        return null;
+        return wxRefundResponse;
     }
 
 

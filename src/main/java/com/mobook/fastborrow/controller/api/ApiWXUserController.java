@@ -355,6 +355,27 @@ public class ApiWXUserController {
         return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
     }
 
+    @PostMapping("/set_log")
+    public ResultVO setLog(@RequestHeader("token") String token,@RequestParam("logId") Integer logId){
+        //检查参数
+        if (StringUtils.isEmpty(token)){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        List<Logistics> logisticsList = logisticsService.findByUserId(user.getUserId());
+        for (Logistics item : logisticsList){
+            item.setStatus(LogisticsStatusEnum.DOWN.getCode());
+            logisticsService.save(item);
+        }
+        Logistics logistics = logisticsService.findOne(logId);
+        logistics.setStatus(LogisticsStatusEnum.UP.getCode());
+        logisticsService.save(logistics);
+        return ResultVOUtil.success();
+    }
+
+
     @GetMapping("/list_log")
     public ResultVO getListLog(@RequestHeader("token") String token){
         //检查参数

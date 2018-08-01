@@ -59,6 +59,9 @@ public class OrderMaster implements Serializable {
     /**续借期限*/
     private Integer orderTime;
 
+    /**备注*/
+    private String note;
+
     /**订单状态*/
     private Integer orderStatus;
 
