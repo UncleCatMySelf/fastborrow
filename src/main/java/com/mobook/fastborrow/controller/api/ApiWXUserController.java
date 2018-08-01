@@ -318,7 +318,13 @@ public class ApiWXUserController {
         //检查Token并获取token对应的用户id
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
         User user = userService.findOne(Integer.parseInt(tokenValue));
+        //做校验
         for (String item : isbns){
+            Collection collectionLibrary = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),
+                    item,CollectionStatusEnum.LIBRARY.getCode());
+            if (collectionLibrary != null){
+                return ResultVOUtil.success("存在重复图书，请重新选择");
+            }
             Collection collection = collectionService.findByUserIdAndIsbn(Integer.parseInt(tokenValue),
                     item,CollectionStatusEnum.COLLECTION.getCode());
             collection.setColStatus(CollectionStatusEnum.LIBRARY.getCode());
