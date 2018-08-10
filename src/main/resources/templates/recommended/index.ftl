@@ -89,8 +89,8 @@
                                     <td>${bookMessage.price}</td>
                                     <td>${bookMessage.pressTime}</td>
                                     <td>
-                                        <div class="checkbox">
-                                            <label><input type="checkbox" value="${bookMessage.isbn}" name="bookmess" />添加</label>
+                                        <div class="checkbox" onclick="checkfun()">
+                                            <label><input type="checkbox" value="${bookMessage.isbn}" name="bookmess"/>添加</label>
                                         </div>
                                     </td>
                                 </tr>
@@ -130,27 +130,110 @@
     </div>
 </div>
 <script type="text/javascript">
-    function indexBtn() {
-        document.getElementById('rec').action = "/fastborrow/admin/recommended/index";
-        document.getElementById('rec').method = "GET";
-        document.getElementById('rec').submit();
+//    function indexBtn() {
+//        document.getElementById('rec').action = "/fastborrow/admin/recommended/index";
+//        document.getElementById('rec').method = "GET";
+//        document.getElementById('rec').submit();
+//    }
+//    function submits() {
+//        var value = [];
+//        $('input:checkbox[name=bookmess]:checked').each (function (k) {
+//            if (k == 0){
+//                value[k] = $(this).val();
+//            }else {
+//                value[k] = $(this).val();
+//            }
+//        });
+//        //alert(value);
+//        var bookMessIdList = document.getElementById('bookMessIdList');
+//        bookMessIdList.value = value;
+//        document.getElementById('rec').action = "/fastborrow/admin/recommended/save";
+//        document.getElementById('rec').method = "GET";
+//        document.getElementById('rec').submit();
+//    }
+//获取url中的参数
+function getUrlParam(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+    var r = window.location.search.substr(1).match(reg); //匹配目标参数
+    if (r != null) return unescape(r[2]); return 1; //返回参数值
+}
+var pageNum = getUrlParam("page");
+console.log(pageNum);
+function indexBtn() {
+    document.getElementById('rec').action = "/fastborrow/admin/recommended/index";
+    document.getElementById('rec').method = "GET";
+    document.getElementById('rec').submit();
+}
+function submits() {
+    var value = [];
+// $('input:checkbox[name=bookmess]:checked').each (function (k) {
+// if (k == 0){
+// value[k] = $(this).val();
+// }else {
+// value[k] = $(this).val();
+// }
+// });
+// alert(value);
+    var pageArray = localStorage.getItem("pages").split(",");
+    for (var i = 0; i < pageArray.length; i++) {
+        value.push(localStorage.getItem('page' + pageArray[i]));
     }
-    function submits() {
-        var value = [];
-        $('input:checkbox[name=bookmess]:checked').each (function (k) {
-            if (k == 0){
-                value[k] = $(this).val();
-            }else {
-                value[k] = $(this).val();
+
+    var bookMessIdList = document.getElementById('bookMessIdList');
+    bookMessIdList.value = value;
+    document.getElementById('rec').action = "/fastborrow/admin/recommended/save";
+    document.getElementById('rec').method = "GET";
+    document.getElementById('rec').submit();
+    window.localStorage.clear();
+}
+
+function checkfun() {
+    var value = [];
+    $('input:checkbox[name=bookmess]:checked').each (function (k) {
+        if (k == 0){
+            value[k] = $(this).val();
+        }else {
+            value[k] = $(this).val();
+        }
+    });
+    localStorage.setItem('page'+pageNum, value); // 存储本页勾选的选项
+    var a = [];
+    a[0] = pageNum;
+    if (localStorage.getItem('pages')) {
+        var b = [];
+        b[0] = localStorage.getItem('pages'); // 声明一个数组保存本地存储的页码
+    } else {
+        var b = [];
+    }
+    if (localStorage.getItem('pages')){
+        var pages = localStorage.getItem('pages').split(",");
+        //console.log(pages);
+        var status = true;
+        for(var i = 0;i < pages.length;i++){
+            //console.log("pageNum:"+pageNum+"--pages[i]:"+pages[i]);
+            if (pageNum == pages[i]){
+                status = false;
             }
-        });
-        //alert(value);
-        var bookMessIdList = document.getElementById('bookMessIdList');
-        bookMessIdList.value = value;
-        document.getElementById('rec').action = "/fastborrow/admin/recommended/save";
-        document.getElementById('rec').method = "GET";
-        document.getElementById('rec').submit();
+            //console.log(pages[i]);
+        }
+        //console.log(status);
+        if (status){
+            var c = a.concat(b);  // 将页码添加进数组中
+            localStorage.setItem('pages', c); // 重新设置本地存储pages的值
+        }
+    }else{
+        var a = [];
+        a[0] = pageNum;
+        if (localStorage.getItem('pages')) {
+            var b = [];
+            b[0] = localStorage.getItem('pages'); // 声明一个数组保存本地存储的页码
+        } else {
+            var b = [];
+        }
+        var c = a.concat(b);  // 将页码添加进数组中
+        localStorage.setItem('pages', c); // 重新设置本地存储pages的值
     }
+}
 </script>
 </body>
 </html>

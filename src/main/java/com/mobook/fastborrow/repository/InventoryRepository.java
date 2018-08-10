@@ -18,6 +18,8 @@ public interface InventoryRepository extends JpaRepository<Inventory,Integer> {
 
     List<Inventory> findByIsbn(String isbn);
 
+    Inventory findByMobookId(String mobookId);
+
     Page<Inventory> findByIsbnIsLike(@Param("isbn") String isbn,Pageable pageable);
 
     List<Inventory> findByWhereTag(String whereTag);

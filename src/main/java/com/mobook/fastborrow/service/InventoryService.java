@@ -18,6 +18,8 @@ public interface InventoryService {
 
     Inventory save(Inventory inventory);
 
+    Inventory findByMobookId(String mobookId);
+
     Page<Inventory> findAll(Pageable pageable);
 
     Inventory findOne(Integer id);

@@ -6,8 +6,7 @@ import com.mobook.fastborrow.constant.URLConstant;
 import com.mobook.fastborrow.constant.WXLogMsgConstant;
 import com.mobook.fastborrow.converter.LogisticsList2WxLogisticsVOConverter;
 import com.mobook.fastborrow.dataobject.*;
-import com.mobook.fastborrow.enums.CollectionStatusEnum;
-import com.mobook.fastborrow.enums.LogisticsStatusEnum;
+import com.mobook.fastborrow.enums.*;
 import com.mobook.fastborrow.form.WxLogisticsForm;
 import com.mobook.fastborrow.service.*;
 import com.mobook.fastborrow.utils.MAVUtils;
@@ -49,6 +48,8 @@ public class ApiWXUserController {
     @Autowired
     private LogisticsService logisticsService;
     @Autowired
+    private InventoryService inventoryService;
+    @Autowired
     private OrderMasterService orderMasterService;
 
     @GetMapping("/user_wallet")
@@ -77,7 +78,7 @@ public class ApiWXUserController {
         String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
         User user = userService.findOne(Integer.parseInt(tokenValue));
         BeanUtils.copyProperties(user,wxUserLoginVO);
-        OrderMaster orderMaster = orderMasterService.findByBuyerOpenid(user.getOpenId());
+        OrderMaster orderMaster = orderMasterService.findByBuyerOpenidAndOrderStatusIsNot(user.getOpenId(), OrderStatusEnum.PENDPAY.getCode());
         if (orderMaster == null){
             wxUserLoginVO.setStatus(0);
         }else{
@@ -346,18 +347,24 @@ public class ApiWXUserController {
             return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
         }
         //检查Token并获取token对应的用户id
-        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
-        User user = userService.findOne(Integer.parseInt(tokenValue));
-        Logistics logistics = new Logistics();
-        BeanUtils.copyProperties(form,logistics);
-        logistics.setUserId(user.getUserId());
-        List<Logistics> logisticsList = logisticsService.findByUserId(user.getUserId());
-        if (logisticsList.size() <= 0){
-            logistics.setStatus(LogisticsStatusEnum.UP.getCode());
+        if (form.getLogId() == null){
+            String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+            User user = userService.findOne(Integer.parseInt(tokenValue));
+            Logistics logistics = new Logistics();
+            BeanUtils.copyProperties(form,logistics);
+            logistics.setUserId(user.getUserId());
+            List<Logistics> logisticsList = logisticsService.findByUserId(user.getUserId());
+            if (logisticsList.size() <= 0){
+                logistics.setStatus(LogisticsStatusEnum.UP.getCode());
+            }else{
+                logistics.setStatus(LogisticsStatusEnum.DOWN.getCode());
+            }
+            logisticsService.save(logistics);
         }else{
-            logistics.setStatus(LogisticsStatusEnum.DOWN.getCode());
+            Logistics logistics = logisticsService.findOne(form.getLogId());
+            BeanUtils.copyProperties(form,logistics);
+            logisticsService.save(logistics);
         }
-        logisticsService.save(logistics);
         return ResultVOUtil.success(WXLogMsgConstant.WX_SUCCESS);
     }
 
@@ -380,7 +387,6 @@ public class ApiWXUserController {
         logisticsService.save(logistics);
         return ResultVOUtil.success();
     }
-
 
     @GetMapping("/list_log")
     public ResultVO getListLog(@RequestHeader("token") String token){
@@ -413,6 +419,22 @@ public class ApiWXUserController {
         }
     }
 
+    @GetMapping("/detail_log")
+    public ResultVO detailLog(@RequestHeader("token") String token,@RequestParam("logId") Integer logId){
+        //检查参数
+        if (StringUtils.isEmpty(token) || logId == null){
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        Logistics logistics = logisticsService.findOne(logId);
+        if (logistics != null && logistics.getUserId() == Integer.parseInt(tokenValue)){
+            return ResultVOUtil.success(logistics);
+        }else{
+            return ResultVOUtil.error(WXLogMsgConstant.WX_PARAM_CODE,WXLogMsgConstant.WX_PARAM);
+        }
+    }
+
     private WxLibraryDetailVO change2WxLibraryDetailVO(Collection e) {
         WxLibraryDetailVO item = new WxLibraryDetailVO();
         BookMessage bookMessage = bookMessageService.findOne(e.getIsbn());
@@ -424,6 +446,13 @@ public class ApiWXUserController {
         WxCollectionDetailVO item = new WxCollectionDetailVO();
         BookMessage bookMessage = bookMessageService.findOne(collection.getIsbn());
         BeanUtils.copyProperties(bookMessage,item);
+        List<Inventory> inventoryList = inventoryService.findByIsbn(item.getIsbn());
+        item.setInventoryState(InventoryVOStatusEnum.NO.getCode());
+        for (Inventory inventory:inventoryList){
+            if (inventory.getStatus() == InventoryStatusEnum.IN.getCode()){
+                item.setInventoryState(InventoryVOStatusEnum.Yes.getCode());
+            }
+        }
         return item;
     }
 

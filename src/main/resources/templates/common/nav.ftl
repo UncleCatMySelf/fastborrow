@@ -25,6 +25,14 @@
             </ul>
         </li>
         <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 订单信息 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/fastborrow/admin/order/Not_shipped">未发货</a></li>
+                <li><a href="/fastborrow/admin/order/Pending_delivery">待收货</a></li>
+            </ul>
+        </li>
+        <li class="dropdown open">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 微信用户借书库 <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>

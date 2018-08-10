@@ -30,6 +30,11 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
+    public Inventory findByMobookId(String mobookId) {
+        return repository.findByMobookId(mobookId);
+    }
+
+    @Override
     public Page<Inventory> findAll(Pageable pageable) {
         return repository.findAll(pageable);
     }

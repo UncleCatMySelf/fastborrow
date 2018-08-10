@@ -50,4 +50,6 @@ public interface URLConstant {
 
     String INVEN_INDEX = "admin/inventory/index";
 
+    String ORDER_DELIVERY = "admin/order/Pending_delivery";
+
 }

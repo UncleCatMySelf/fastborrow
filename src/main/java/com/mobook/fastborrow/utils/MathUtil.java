@@ -1,5 +1,7 @@
 package com.mobook.fastborrow.utils;
 
+import java.math.BigDecimal;
+
 /**
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
@@ -8,6 +10,12 @@ package com.mobook.fastborrow.utils;
  */
 public class MathUtil {
     private static final Double MONEY_RANGE = 0.01;
+
+    public static double add(double v1,double v2){
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.add(b2).doubleValue();
+    }
 
     /**
      * 比较2个金额是否相等

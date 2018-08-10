@@ -13,6 +13,8 @@ import javax.validation.constraints.NotEmpty;
 @Data
 public class WxLogisticsForm {
 
+    private Integer logId;
+
     @NotEmpty
     private String logName;
 

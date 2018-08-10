@@ -19,6 +19,8 @@ public enum ResultEnum {
 
     AD_NOT_EXIT(27,"广告不存在"),
 
+    INSUFFICIENT_STOCK(901,"库存不足"),
+
     PRODUCT_STOCK_ERROR(11, "商品库存不正确"),
 
     ORDER_NOT_EXIST(12, "订单不存在"),

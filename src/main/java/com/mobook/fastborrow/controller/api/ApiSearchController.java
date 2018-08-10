@@ -81,6 +81,14 @@ public class ApiSearchController {
         return searchService.query(msg,start,size);
     }
 
+    @GetMapping("/get_history")
+    public ResultVO getHistory(@RequestHeader("token") String token){
+        String tokenValue = stringRedisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        String userSearchValue =  stringRedisTemplate.opsForValue().get(String.format(RedisConstant.WX_USER_SEARCH,user.getUserId()));
+        return ResultVOUtil.success(com.mobook.fastborrow.utils.StringUtils.getStringSearch(userSearchValue));
+    }
+
     private void redisMsg(@RequestHeader("token") String token, @RequestParam("msg") String msg) {
         if (StringUtils.isEmpty(token)){
             //用户未登录---直接查询

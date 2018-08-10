@@ -7,6 +7,7 @@ import com.mobook.fastborrow.exception.FastBorrowException;
 import com.mobook.fastborrow.repository.*;
 import com.mobook.fastborrow.service.OrderMasterService;
 import com.mobook.fastborrow.utils.KeyUtil;
+import com.mobook.fastborrow.utils.MathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,34 @@ public class OrderMasterServiceImpl implements OrderMasterService {
     }
 
     @Override
+    public List<OrderMaster> findByBuyerOpenidAndOrderStatus(String buyerOpenid, Integer orderStatus) {
+        return repository.findByBuyerOpenidAndOrderStatus(buyerOpenid, orderStatus);
+    }
+
+    @Override
+    public OrderMaster findByBuyerOpenidAndOrderStatusIsNot(String buyerOpenid, Integer orderStatus) {
+        return repository.findByBuyerOpenidAndOrderStatusIsNot(buyerOpenid,orderStatus);
+    }
+
+    @Override
+    public Page<OrderMaster> findByOrderStatus(Integer orderStatus, Pageable pageable) {
+        return repository.findByOrderStatus(orderStatus, pageable);
+    }
+
+    @Override
+    public OrderMaster save(OrderMaster orderMaster) {
+        return repository.save(orderMaster);
+    }
+
+    @Override
+    public List<OrderMaster> findByBuyerOpenidAndOrderStatusList(String buyerOpenid, Integer orderStatus) {
+        return null;
+    }
+
+    @Override
     public OrderDTO findOne(String orderId) {
+        System.out.println(orderId);
         OrderMaster orderMaster = repository.findById(orderId).get();
-        if (orderMaster == null){
-            throw new FastBorrowException(ResultEnum.ORDER_NOT_EXIST);
-        }
 
         List<OrderDetail> orderDetailList = new ArrayList<>();
         if (orderMaster.getOrderNum() == 0){//押金
@@ -62,10 +86,16 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         }else{
             orderDetailList = orderDetailRepository.findByOrderId(orderId);
         }
+        System.out.println(1111);
         OrderDTO orderDTO = new OrderDTO();
         BeanUtils.copyProperties(orderMaster,orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
         return orderDTO;
+    }
+
+    @Override
+    public OrderMaster getOne(String orderId) {
+        return repository.findById(orderId).get();
     }
 
     @Override
@@ -126,12 +156,13 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         //获取对应用户默认地址
         Logistics logistics = logisticsRepository.findByUserIdAndStatus(user.getUserId(), LogisticsStatusEnum.UP.getCode());
         OrderMaster orderMaster = createOrderMaster(user,logistics,isbns,renew,note);
-        return repository.save(orderMaster);
+        OrderMaster result = repository.save(orderMaster);
+        return result;
     }
 
     private OrderMaster createOrderMaster(User user, Logistics logistics, String[] isbns,String renew,String note) {
         String orderId = KeyUtil.genUniqueKey();
-        BigDecimal sum = new BigDecimal(0);
+        Double sum = 0.0;
         for (String item : isbns){
             BookMessage bookMessage = bookMessageRepository.findById(item).get();
             OrderDetail orderDetail = new OrderDetail();
@@ -143,7 +174,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
             orderDetail.setMobookIcon(bookMessage.getImages());
             orderDetail.setMobookPrice(bookMessage.getPrice());
             orderDetailRepository.save(orderDetail);
-            sum.add(bookMessage.getPrice());
+            sum = MathUtil.add(sum,bookMessage.getPrice().doubleValue());
         }
         OrderMaster orderMaster = new OrderMaster();
         //订单号
@@ -159,15 +190,17 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         //快递单号
         orderMaster.setExpressNum("");
         //订单金额-全部书的金额总价
-        orderMaster.setOrderAmount(sum);
+        orderMaster.setOrderAmount(new BigDecimal(sum));
         //订单押金
         orderMaster.setOrderDeposit(new BigDecimal(99));
         //快递费用
         orderMaster.setOrderExpress(new BigDecimal(10));
         //子订单数量
         orderMaster.setOrderNum(isbns.length);
+        //备注
+        orderMaster.setNote(note);
         //实际付款-折扣后
-        orderMaster.setOrderPayment(calculateCosts(renew,sum));
+        orderMaster.setOrderPayment(calculateCosts(renew,new BigDecimal(sum)));
         //续借期限
         orderMaster.setOrderTime(Integer.parseInt(renew));
         //支付状态

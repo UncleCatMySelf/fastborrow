@@ -6,22 +6,19 @@ import lombok.Getter;
  * @Author:UncleCatMySelf
  * @Email：zhupeijie_java@126.com
  * @QQ:1341933031
- * @Date:Created in 10:44 2018\7\27 0027
+ * @Date:Created in 11:56 2018\8\8 0008
  */
 @Getter
-public enum OrderStatusEnum implements CodeEnum {
-    PENDPAY(1 , "押金"),
-    PENDDELIVERY(2, "待收货"),
-    PENDRETURN(3,"待归还"),
-    COMPLETED(4,"已完成"),
-    NEW(5,"新订单"),
+public enum TimeStatusEnum implements CodeEnum{
+    THREE_MONTHS(1,"三个月"),
+    HALF(2,"半年"),
+    ONE_YEAR(3,"一年"),
     ;
-
     private Integer code;
 
     private String message;
 
-    OrderStatusEnum(Integer code, String message) {
+    TimeStatusEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

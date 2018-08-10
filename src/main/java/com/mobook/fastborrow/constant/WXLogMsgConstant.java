@@ -18,6 +18,10 @@ public interface WXLogMsgConstant {
 
     Integer WX_SUCCESS = 777;
 
+    Integer WX_DEPOSIT_CODE = 888;
+
+    Integer WX_PDOO = 889;
+
     String WX_PARAM = "参数错误，请重新传递";
 
     String WX_ERROR_OPENID = "获取session_key及openID时异常，微信内部错误";
@@ -25,4 +29,8 @@ public interface WXLogMsgConstant {
     String WX_ERRORCODE = "请求失败返回ERRCODE";
 
     String WX_REPEAT_ADD = "重复添加";
+
+    String WX_DEPOSIT = "请充值押金";
+
+    String WX_PDOO_MSG = "禁止重复下单";
 }

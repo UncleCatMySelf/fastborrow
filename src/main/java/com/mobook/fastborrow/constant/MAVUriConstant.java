@@ -81,4 +81,10 @@ public interface MAVUriConstant {
     String PAY_CREATE = "pay/create";
 
     String PAY_SUCCESS = "pay/success";
+
+    String ORDER_DELIVERY = "order/delivery";
+
+    String ORDER_SHIPPED = "order/shipped";
+
+    String ORDER_INDEX = "order/index";
 }

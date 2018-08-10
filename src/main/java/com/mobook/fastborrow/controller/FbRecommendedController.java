@@ -93,6 +93,7 @@ public class FbRecommendedController {
                     URLConstant.BASE+URLConstant.REC_LIST);
         }
         Recommended recommended = new Recommended();
+        System.err.println("----------------");
         try {
             if (form.getId() != null){
                 recommended = recommendedService.findOne(form.getId());
@@ -100,8 +101,9 @@ public class FbRecommendedController {
             BeanUtils.copyProperties(form,recommended);
             recommended.setCss(form.getCssstatus());
             Recommended saveItem = recommendedService.save(recommended);
+            System.err.println("数据list长度："+form.getBookMessIdList().length);
             for (String bookMessid : form.getBookMessIdList()){
-                //System.err.println(bookMessid);
+                System.err.println(bookMessid);
                 BookMessage bookMessage = bookMessageService.findOne(bookMessid);
                 bookMessage.setRecNum(saveItem.getId());
                 bookMessageService.save(bookMessage);
@@ -110,6 +112,7 @@ public class FbRecommendedController {
             return MAVUtils.setResultMOV(MAVUriConstant.ERROR,e.getMessage(),
                     URLConstant.BASE+URLConstant.REC_INDEX);
         }
+        System.err.println("----------------");
         return MAVUtils.setResultMOV(MAVUriConstant.SUCCESS,null,
                 URLConstant.BASE+URLConstant.REC_LIST);
     }

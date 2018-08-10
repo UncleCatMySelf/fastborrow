@@ -2,13 +2,17 @@ package com.mobook.fastborrow.controller.api;
 
 import com.mobook.fastborrow.constant.MAVUriConstant;
 import com.mobook.fastborrow.constant.RedisConstant;
+import com.mobook.fastborrow.dataobject.Inventory;
+import com.mobook.fastborrow.dataobject.OrderDetail;
+import com.mobook.fastborrow.dataobject.OrderMaster;
 import com.mobook.fastborrow.dataobject.User;
 import com.mobook.fastborrow.dto.OrderDTO;
+import com.mobook.fastborrow.enums.InventoryStatusEnum;
+import com.mobook.fastborrow.enums.OrderStatusEnum;
+import com.mobook.fastborrow.enums.PayStatusEnum;
 import com.mobook.fastborrow.enums.ResultEnum;
 import com.mobook.fastborrow.exception.FastBorrowException;
-import com.mobook.fastborrow.service.OrderMasterService;
-import com.mobook.fastborrow.service.PayService;
-import com.mobook.fastborrow.service.UserService;
+import com.mobook.fastborrow.service.*;
 import com.mobook.fastborrow.utils.ResultVOUtil;
 import com.mobook.fastborrow.vo.ResultVO;
 import com.mobook.fastborrow.wechatpay.WxRefundResponse;
@@ -18,6 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 
 /**
@@ -40,11 +47,20 @@ public class ApiPayController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
-
+    @Autowired
+    private InventoryService inventoryService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
-    @GetMapping("/create")
+    /**
+     * 下订单支付
+     * @param token
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/create")
     public ResultVO create(@RequestHeader("token") String token,
                            @RequestParam("orderId") String orderId){
         //检查Token并获取token对应的用户id
@@ -60,6 +76,11 @@ public class ApiPayController {
         return ResultVOUtil.success(wxResponse);
     }
 
+    /**
+     * 押金支付
+     * @param token
+     * @return
+     */
     @GetMapping("/deposit")
     public ResultVO deposit(@RequestHeader("token") String token){
         //检查Token并获取token对应的用户id
@@ -90,5 +111,36 @@ public class ApiPayController {
         payService.notify(notifyData);
         //返回给微信处理结果
         return new ModelAndView(MAVUriConstant.PAY_SUCCESS);
+    }
+
+    @PostMapping("/pay_success")
+    public ResultVO paySuccess(@RequestHeader("token") String token){
+        setDeposit(token,new BigDecimal(99.00));
+        return ResultVOUtil.success();
+    }
+
+    private void setDeposit(@RequestHeader("token") String token,BigDecimal deposit) {
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        user.setUserDeposit(deposit);
+        userService.save(user);
+    }
+
+    @PostMapping("/rund_success")
+    public ResultVO rundSuccess(@RequestHeader("token") String token){
+        setDeposit(token,new BigDecimal(0.0));
+        return ResultVOUtil.success();
+    }
+
+    @PostMapping("/create_success")
+    public ResultVO createSuccess(@RequestHeader("token") String token,
+                                  @RequestParam("orderId") String orderId){
+        //检查Token并获取token对应的用户id
+        String tokenValue = redisTemplate.opsForValue().get(String.format(RedisConstant.WX_TONEKN_PREFIX,token));
+        User user = userService.findOne(Integer.parseInt(tokenValue));
+        OrderMaster orderMaster = orderMasterService.getOne(orderId);
+        orderMaster.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+        orderMasterService.save(orderMaster);
+        return ResultVOUtil.success();
     }
 }
